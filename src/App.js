@@ -8,7 +8,7 @@ const App = () => {
   return (
     <Routes>
       <Route element={<Header brightness={brightness} setBrightness={setBrightness}/>}>
-        <Route path="/" element={<Table brightness={brightness}/>} />
+        <Route path="/car-search" element={<Table brightness={brightness}/>} />
       </Route>
     </Routes>
   );
