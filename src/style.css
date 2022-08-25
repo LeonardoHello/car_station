@@ -1,0 +1,279 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  font-family: 'Poppins', sans-serif;
+  transition: background-color .3s, color .3s, fill .3s;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 1.6rem;
+  padding: 2rem 1.5rem 4rem 1.5rem;
+  gap: 3rem;
+}
+
+#root > * {
+  width: min(100%, 100rem);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#logo {
+  font-weight: 500;
+  letter-spacing: -1px;
+  word-break: break-word;
+  color: transparent;
+  background-clip: text;
+}
+
+#brightness {
+  min-height: 3.5rem;
+  min-width: 8rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 2rem;
+  background-color: aliceblue;
+  cursor: pointer;
+}
+
+#brightness > * {
+  position: absolute;
+  animation: mode 1s;
+  font-variation-settings: 'FILL' 1, 'wght' 100, 'GRAD' 0, 'opsz' 20;
+  color: transparent;
+  background-clip: text;
+  line-height: .9;
+  font-size: 4rem;
+  user-select: none;
+  transition: all .5s;
+}
+
+button {
+  background-color: unset;
+  border: unset;
+  border-radius: .3rem;
+  font-size: 1.6rem;
+  user-select: none;
+  cursor: pointer;
+}
+
+main > * {
+  display: flex;
+  justify-content: space-between;
+}
+
+#filter {
+  flex-direction: column;
+  padding-bottom: 2rem;
+  justify-content: unset;
+  overflow: hidden;
+  gap: 1rem;
+}
+
+#filter button {
+  color: gray;
+  border: 1px solid gray;
+  padding: .4em 1.5em;
+  white-space: nowrap;
+}
+
+#filter > div:first-of-type  {
+  display: flex;
+  gap: 1rem;
+}
+
+.MYP {
+  overflow-x: scroll;
+  display: flex;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+@keyframes filter {
+  from {left: -45rem}
+  to {left: 15rem}
+}
+
+#thead {
+  padding: 1rem 2rem;
+  border-radius: .5rem;
+}
+
+#thead > div {
+  display: flex;
+  flex-basis: 100%;
+}
+
+#thead > div:last-of-type, #thead > div:nth-last-of-type(2) {
+  justify-content: end;
+}
+
+#thead > div > div {
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+  font-weight: 300;
+  gap: .5rem;
+  cursor: pointer;
+}
+
+.list {
+  padding: 2rem;
+  background-clip: text;
+}
+
+.list:hover {
+  background-color: #8983f7;
+}
+
+.list p {
+  flex-basis: 100%;
+}
+
+.list p:last-of-type, .list p:nth-last-of-type(2) {
+  text-align: right;
+}
+
+.list p:first-of-type, .list p:last-of-type {
+  font-weight: 500;
+}
+
+.arrows {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+
+.arrows svg {
+  height: .5rem;
+  width: 1rem;
+}
+
+.arrows svg:first-of-type {
+  transform: rotate(180deg);
+}
+
+#paging {
+  display: flex;
+  margin-top: 4rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+#paging > * {
+  font-size: 2rem;
+}
+
+#paging p {
+  text-align: center;
+}
+
+.opacity_0 {
+  opacity: 0;
+}
+
+.left {
+  left:0;
+}
+
+.right {
+  left: 4rem;
+}
+
+#table {
+  display: flex;
+  flex-direction: column;
+}
+
+.car_info {
+  display: flex;
+}
+
+.color_white {
+  color: rgba(240, 248, 255, 0.822);
+}
+
+.color_gray {
+  color: #707a8a7d;
+}
+
+.dark_bg {
+  background-color: #121218e7;
+}
+
+.fill_white {
+  fill: #fff;
+}
+
+.fill_black {
+  fill: #000000;
+}
+
+.sun_color {
+  background-image: linear-gradient(to right,#ff0080, #ff8c00);
+  z-index: 2;
+}
+
+.moon_color {
+  background-image: linear-gradient(to left,#a3dafb, #8983f7)
+}
+
+.sun_color_bg {
+  background-image: linear-gradient(to right,#ff008025, #ff8c0025);
+}
+
+.moon_color_bg {
+  background-image: linear-gradient(to left,#a3d9fb25, #8983f725)
+}
+
+.sun_color_border {
+  border-bottom: 1px solid #ff008025;
+}
+
+.moon_color_border {
+  border-bottom: 1px solid #8983f745;
+}
+
+
+
+@media only screen and (min-width: 600px) {
+  #filter > button {
+    max-width: fit-content;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+
+  #root {
+    padding: 3rem 4rem;
+    font-size: 1.8rem;
+  }
+
+  #thead > * {
+    font-size: 1.4rem;
+  }
+
+  main {
+    max-width: 100rem;
+  }
+
+  h1 {
+    font-size: 5rem;
+  }
+}
