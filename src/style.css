@@ -67,7 +67,7 @@ button {
   background-color: unset;
   border: unset;
   border-radius: .3rem;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   user-select: none;
   cursor: pointer;
 }
@@ -95,6 +95,10 @@ main > * {
 #filter > div:first-of-type  {
   display: flex;
   gap: 1rem;
+}
+
+#filter > div:first-of-type button {
+  font-size: 1.4rem;
 }
 
 .MYP {
