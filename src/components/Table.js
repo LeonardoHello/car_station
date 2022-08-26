@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import axios from "axios";
 import useAuth from "../useAuth";
+import TableHead from './TableHead';
+import Filter from './Filter';
 
 const Table = ({ brightness }) => {
 	const accessToken = useAuth();
@@ -14,7 +16,8 @@ const Table = ({ brightness }) => {
 	const [order, setOrder] = useState();
 	const [displayFilter, setDisplayFilter] = useState(false);
 	const [filter, setFilter] = useState();
-	const filtering = ["Make", "Name", "Year", "price"];
+	const edit = ["Make", "Name", "Year", "Price"];
+	const filterEdit = [edit[0], ...edit.slice(2)];
 
 	useEffect(() => {
 		axios({
@@ -28,7 +31,7 @@ const Table = ({ brightness }) => {
 			}
 		}).then(res => setVehicleMake(res.data.item))
 		.catch(err => console.error(err));
-		console.log('$1 - $99,999'.split('-')[1].slice(2));
+		console.log(filterEdit.filter((elem, index) => elem === filter ));
 	}, []);
 
  	useEffect(() => {
@@ -63,6 +66,12 @@ const Table = ({ brightness }) => {
 		}
 	}, [limit, page, totalPages, sort, order, search]);
 
+	const closeFilter = () => {
+		setDisplayFilter(prev => !prev);
+		setFilter();
+		setSearch();
+	}
+
 	/* const send = () => {
 		if (!vehicleModel) return
 		vehicleModel.map(elemA => {
@@ -93,57 +102,31 @@ const Table = ({ brightness }) => {
 	return (
 		<main>
 			<div id='filter'>
-				<button onClick={() => {setDisplayFilter(prev => !prev); setFilter(); setSearch()}}>Filter</button>
-				{displayFilter && 
-				<div>
-					{["Make", "Year", "Price"].map((elem, index) => <button key={index} onClick={() => setFilter(elem)}>{elem}</button>)}
-				</div>}
-				{filter === 'Make' ?
-					<div className='MYP'>
-						{vehicleMake.map((elem, index) => <button key={index} onClick={() => setSearch(`where make = '${elem.name}'`)}>{elem.name}</button>)}
-					</div> : 
-				filter === 'Year' ?
-					<div className='MYP'>
-						{['2015', '2016', '2017'].map((elem, index) => <button key={index} onClick={() => setSearch(`where year = ${elem}`)}>{elem}</button>)}
-					</div> :
-				filter === 'Price' ?
-					<div className='MYP'>
-						{['$1 - $99,999', '$100,000 - $249,999', '$250,000 - $499,999', '$500,000 - $999,999'].map((elem, index) => <button key={index} onClick={() => (
-							setSearch(`where price > ${!elem.split('-')[0].includes(',') ? 
-							parseInt(elem.split('-')[0].slice(1)) : 
-							parseInt(elem.split('-')[0].split(',').join('').slice(1))} and price < ${parseInt(elem.split('-')[1].split(',').join('').slice(2))}`))
-						}>{elem}</button>)}
-					</div> : null}
+				<button onClick={closeFilter}>Filter</button>
+				{displayFilter && (
+					<div>
+						{filterEdit.map((elem, index) => <button key={index} onClick={() => setFilter(elem)}>{elem}</button>)}
+					</div>
+				)}
+				{filterEdit.map((elem, index) => elem === filter ?
+					<Filter 
+						key={index} 
+						filterName={elem}
+						vehicleMake={vehicleMake}
+						setSearch={setSearch}
+					/> : null)}
 			</div>
 			<div id='thead' className='sun_color_bg'>
-				{filtering.map((elem, index) => (
-					<div key={index}>
-						<div onClick={(e) => {
-								brightness ? [...document.querySelectorAll('#thead path')].map(elem => elem.classList.replace('fill_white', 'fill_black')) : [...document.querySelectorAll('#thead path')].map(elem => elem.classList.replace('fill_black', 'fill_white'));
-								if (sort !== elem.toLowerCase()) {
-									setSort(elem.toLowerCase());
-									setOrder('asc');
-									brightness ? e.currentTarget.querySelector('#asc path').classList.replace('fill_black', 'fill_white') : e.currentTarget.querySelector('#asc path').classList.replace('fill_white', 'fill_black');
-								} else if (sort === elem.toLowerCase() && order === 'asc') {
-									setOrder('desc');
-									brightness ? e.currentTarget.querySelector('#desc path').classList.replace('fill_black', 'fill_white') : e.currentTarget.querySelector('#desc path').classList.replace('fill_white', 'fill_black');
-								} else {
-									setSort();
-									setOrder();
-								}
-							}}>
-							<p>{elem}</p>
-							<div className='arrows' >
-								<svg id='asc' xmlns="http://www.w3.org/2000/svg" viewBox="0 5 25 15">
-									<path className='fill_white' d="m12.5 18-10-9.95h20Z"/>
-								</svg>
-								<svg id='desc' xmlns="http://www.w3.org/2000/svg" viewBox="0 5 25 15">
-									<path className='fill_white' d="m12.5 18-10-9.95h20Z" />
-								</svg>
-							</div>
-						</div>
-					</div>
-				))}
+				{edit.map((elem, index) => 
+					<TableHead 
+						key={index}
+						name={elem}
+						brightness={brightness}
+						order={order}
+						setOrder={setOrder}
+						sort={sort}
+						setSort={setSort}
+					/>)}
 			</div>
 			{vehicles && vehicles.map((elem, index) => (
 				<div key={index} className="list sun_color_border" >

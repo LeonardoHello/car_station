@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Outlet } from "react-router-dom";
 
 const Header = ({ brightness, setBrightness }) => {
+
 	useEffect(() => {
 		if (brightness) {
 			document.querySelector('#brightness span:first-of-type').classList.remove('opacity_0');

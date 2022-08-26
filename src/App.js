@@ -5,10 +5,11 @@ import Header from "./components/Header";
 
 const App = () => {
   const [brightness, setBrightness] = useState(true);
+
   return (
     <Routes>
-      <Route element={<Header brightness={brightness} setBrightness={setBrightness}/>}>
-        <Route path="/car-search" element={<Table brightness={brightness}/>} />
+      <Route element={<Header brightness={brightness} setBrightness={setBrightness} />}>
+        <Route path="/car-search" element={<Table brightness={brightness} />} />
       </Route>
     </Routes>
   );
