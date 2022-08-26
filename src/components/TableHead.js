@@ -23,10 +23,10 @@ const TableHead = ({ name, brightness, sort, setSort, order, setOrder }) => {
 				<p>{name}</p>
 				<div className='arrows' >
 					<svg id='asc' xmlns="http://www.w3.org/2000/svg" viewBox="0 5 25 15">
-						<path className='fill_white' d="m12.5 18-10-9.95h20Z"/>
+						<path d="m12.5 18-10-9.95h20Z"/>
 					</svg>
 					<svg id='desc' xmlns="http://www.w3.org/2000/svg" viewBox="0 5 25 15">
-						<path className='fill_white' d="m12.5 18-10-9.95h20Z" />
+						<path d="m12.5 18-10-9.95h20Z" />
 					</svg>
 				</div>
 			</div>

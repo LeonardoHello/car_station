@@ -7,6 +7,15 @@
   transition: background-color .3s, color .3s, fill .3s;
 }
 
+a {
+  color: unset;
+  text-decoration: unset;
+  text-align: end;
+  border-radius: .3rem;
+  font-weight: 300;
+  cursor: pointer;
+}
+
 html {
   font-size: 62.5%;
 }
@@ -72,12 +81,8 @@ button {
   cursor: pointer;
 }
 
-main > * {
-  display: flex;
-  justify-content: space-between;
-}
-
 #filter {
+  display: flex;
   flex-direction: column;
   padding-bottom: 2rem;
   justify-content: unset;
@@ -97,6 +102,10 @@ main > * {
   gap: 1rem;
 }
 
+#filter > div:first-of-type > * {
+  flex-basis: 100%;
+}
+
 #filter > div:first-of-type button {
   font-size: 1.4rem;
 }
@@ -108,12 +117,9 @@ main > * {
   padding-bottom: 1rem;
 }
 
-@keyframes filter {
-  from {left: -45rem}
-  to {left: 15rem}
-}
-
 #thead {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   padding: 1rem 2rem;
   border-radius: .5rem;
 }
@@ -137,24 +143,22 @@ main > * {
 }
 
 .list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   padding: 2rem;
-  background-clip: text;
+  gap: 1rem;
 }
 
 .list:hover {
-  background-color: #8983f7;
+  background-image: linear-gradient(to right,#ff008010, #ff8c0010);
 }
 
-.list p {
-  flex-basis: 100%;
+.list > * {
+  word-break: break-all;
 }
 
-.list p:last-of-type, .list p:nth-last-of-type(2) {
+.list p:not(.list p:first-of-type, .list p:nth-of-type(2)) {
   text-align: right;
-}
-
-.list p:first-of-type, .list p:last-of-type {
-  font-weight: 500;
 }
 
 .arrows {
@@ -198,15 +202,6 @@ main > * {
 
 .right {
   left: 4rem;
-}
-
-#table {
-  display: flex;
-  flex-direction: column;
-}
-
-.car_info {
-  display: flex;
 }
 
 .color_white {
@@ -254,11 +249,13 @@ main > * {
   border-bottom: 1px solid #8983f745;
 }
 
-
-
 @media only screen and (min-width: 600px) {
   #filter > button {
     max-width: fit-content;
+  }
+
+  #filter > div:first-of-type > * {
+    flex-basis: unset;
   }
 }
 
@@ -273,7 +270,7 @@ main > * {
     font-size: 1.4rem;
   }
 
-  main {
+  #table {
     max-width: 100rem;
   }
 

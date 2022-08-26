@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom';
 import axios from "axios";
 import useAuth from "../useAuth";
 import TableHead from './TableHead';
@@ -31,7 +32,6 @@ const Table = ({ brightness }) => {
 			}
 		}).then(res => setVehicleMake(res.data.item))
 		.catch(err => console.error(err));
-		console.log(filterEdit.filter((elem, index) => elem === filter ));
 	}, []);
 
  	useEffect(() => {
@@ -48,7 +48,6 @@ const Table = ({ brightness }) => {
 				"Content-Type": "application/json"
 			}
 		}).then(res => {
-			console.log(res.data);
 			setVehicles(res.data.item); 
 			setTotalPages(Math.ceil(res.data.totalRecords/res.data.recordsPerPage))
 		})
@@ -100,7 +99,7 @@ const Table = ({ brightness }) => {
 		})
 	} */
 	return (
-		<main>
+		<main id='table'>
 			<div id='filter'>
 				<button onClick={closeFilter}>Filter</button>
 				{displayFilter && (
@@ -114,7 +113,8 @@ const Table = ({ brightness }) => {
 						filterName={elem}
 						vehicleMake={vehicleMake}
 						setSearch={setSearch}
-					/> : null)}
+					/> 
+				: null)}
 			</div>
 			<div id='thead' className='sun_color_bg'>
 				{edit.map((elem, index) => 
@@ -134,6 +134,7 @@ const Table = ({ brightness }) => {
 					<p>{elem.name.split('-').join(' ')}</p>
 					<p>{elem.year}</p>
 					<p>{`$${elem.price.toLocaleString('en-US')}`}</p>
+					<Link to={`/car-search/${elem.make}/${elem.name}`}>details</Link>
 				</div>
 			))}
 			<div id='paging'>

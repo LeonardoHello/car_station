@@ -1,5 +1,3 @@
-import React from 'react'
-
 const Filter = ({ filterName, vehicleMake, setSearch }) => {
 	return (
 		filterName === 'Make' ?
@@ -18,7 +16,8 @@ const Filter = ({ filterName, vehicleMake, setSearch }) => {
 					parseInt(elem.split('-')[0].slice(1)) : 
 					parseInt(elem.split('-')[0].split(',').join('').slice(1))} and price < ${parseInt(elem.split('-')[1].split(',').join('').slice(2))}`))
 				}>{elem}</button>)}
-			</div> : null
+			</div> 
+		: null
 	)
 }
 
