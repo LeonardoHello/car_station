@@ -12,9 +12,8 @@ const Header = ({ brightness, setBrightness }) => {
 			document.getElementById('root').classList.remove('dark_bg');
 			if (document.getElementById('table') !== null) {
 				document.getElementById('thead').classList.replace('moon_color_bg', 'sun_color_bg');
-				[...document.querySelectorAll('#thead path')].map(elem => elem.classList.remove('fill_white'));
 				[...document.querySelectorAll('.list')].map(elem => elem.classList.replace('moon_color_border', 'sun_color_border'));
-				[...document.querySelectorAll('main p, #paging button')].map(elem => elem.classList.remove('color_white'));
+				[...document.querySelectorAll('p:not(.list p:last-of-type), a, #paging button')].map(elem => elem.classList.remove('color_white'));
 			}
 		} else {
 			document.querySelector('#brightness span:last-of-type').classList.remove('opacity_0');
@@ -25,10 +24,8 @@ const Header = ({ brightness, setBrightness }) => {
 			document.getElementById('root').classList.add('dark_bg');
 			if (document.getElementById('table') !== null) {
 				document.getElementById('thead').classList.replace('sun_color_bg', 'moon_color_bg');
-				[...document.querySelectorAll('#thead path')].map(elem => elem.classList.add('fill_white'));
 				[...document.querySelectorAll('.list')].map(elem => elem.classList.replace('sun_color_border', 'moon_color_border'));
-				[...document.querySelectorAll('main p, #paging button')].map(elem => elem.classList.add('color_white'));
-				
+				[...document.querySelectorAll('p:not(.list p:last-of-type), a, #paging button')].map(elem => elem.classList.add('color_white'));
 			}
 		}
 	}, [brightness]);

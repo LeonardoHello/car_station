@@ -8,7 +8,7 @@
 }
 
 a {
-  color: unset;
+  color: currentColor;
   text-decoration: unset;
   text-align: end;
   border-radius: .3rem;
@@ -217,11 +217,7 @@ button {
 }
 
 .fill_white {
-  fill: #fff;
-}
-
-.fill_black {
-  fill: #000000;
+  fill: white;
 }
 
 .sun_color {

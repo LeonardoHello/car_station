@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import useAuth from "../useAuth";
@@ -62,6 +62,16 @@ const Table = ({ brightness }) => {
 			document.getElementById('next').classList.add('color_gray');
 		} else {
 			document.getElementById('next').classList.remove('color_gray');
+		}
+
+		if (brightness) {
+			document.getElementById('thead').classList.replace('moon_color_bg', 'sun_color_bg');
+			[...document.querySelectorAll('.list')].map(elem => elem.classList.replace('moon_color_border', 'sun_color_border'));
+			[...document.querySelectorAll('p:not(.list p:last-of-type), a, #paging button')].map(elem => elem.classList.remove('color_white'));
+		} else {
+			document.getElementById('thead').classList.replace('sun_color_bg', 'moon_color_bg');
+			[...document.querySelectorAll('.list')].map(elem => elem.classList.replace('sun_color_border', 'moon_color_border'));
+			[...document.querySelectorAll('p:not(.list p:last-of-type), a, #paging button')].map(elem => elem.classList.add('color_white'));
 		}
 	}, [limit, page, totalPages, sort, order, search]);
 
@@ -134,7 +144,7 @@ const Table = ({ brightness }) => {
 					<p>{elem.name.split('-').join(' ')}</p>
 					<p>{elem.year}</p>
 					<p>{`$${elem.price.toLocaleString('en-US')}`}</p>
-					<Link to={`/car-search/${elem.make}/${elem.name}`}>details</Link>
+					<p><Link to={`/car-search/${elem.make}/${elem.name}`}>details</Link></p>
 				</div>
 			))}
 			<div id='paging'>
