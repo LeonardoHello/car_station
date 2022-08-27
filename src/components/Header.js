@@ -4,38 +4,18 @@ import { Outlet } from "react-router-dom";
 const Header = ({ brightness, setBrightness }) => {
 	useEffect(() => {
 		if (brightness) {
-			document.querySelector('#brightness span:first-of-type').classList.remove('opacity_0');
-			document.querySelector('#brightness span:first-of-type').classList.replace('right', 'left');
-			document.querySelector('#brightness span:last-of-type').classList.add('opacity_0');
-			document.querySelector('#brightness span:last-of-type').classList.replace('right', 'left');
-			document.getElementById('logo').classList.replace('moon_color', 'sun_color');
 			document.getElementById('root').classList.remove('dark_bg');
-			if (document.getElementById('table') !== null) {
-				document.getElementById('thead').classList.replace('moon_color_bg', 'sun_color_bg');
-				[...document.querySelectorAll('.list')].map(elem => elem.classList.replace('moon_color_border', 'sun_color_border'));
-				[...document.querySelectorAll('p:not(.list p:last-of-type), a, #paging button')].map(elem => elem.classList.remove('color_white'));
-			}
 		} else {
-			document.querySelector('#brightness span:last-of-type').classList.remove('opacity_0');
-			document.querySelector('#brightness span:last-of-type').classList.replace('left', 'right');
-			document.querySelector('#brightness span:first-of-type').classList.add('opacity_0');
-			document.querySelector('#brightness span:first-of-type').classList.replace('left', 'right');
-			document.getElementById('logo').classList.replace('sun_color', 'moon_color');
 			document.getElementById('root').classList.add('dark_bg');
-			if (document.getElementById('table') !== null) {
-				document.getElementById('thead').classList.replace('sun_color_bg', 'moon_color_bg');
-				[...document.querySelectorAll('.list')].map(elem => elem.classList.replace('sun_color_border', 'moon_color_border'));
-				[...document.querySelectorAll('p:not(.list p:last-of-type), a, #paging button')].map(elem => elem.classList.add('color_white'));
-			}
 		}
 	}, [brightness]);
 	return (
 		<>
 			<header>
-				<h1 id='logo' className='sun_color'>Car Search</h1>
+				<h1 id='logo' className={brightness ? 'sun_color' : 'moon_color'}>Car Search</h1>
 				<div id='brightness' onClick={() => setBrightness(prev => !prev)}>
-					<span className="material-symbols-outlined left sun_color">radio_button_unchecked</span>
-					<span className="material-symbols-outlined left moon_color">dark_mode</span>
+					<span className={`material-symbols-outlined left sun_color ${brightness ? 'left' : 'right opacity_0'}`}>radio_button_unchecked</span>
+					<span className={`material-symbols-outlined left moon_color ${brightness ? 'left opacity_0' : 'right'}`}>dark_mode</span>
 				</div>
 			</header>
 			<Outlet />

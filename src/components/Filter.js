@@ -2,7 +2,7 @@ const Filter = ({ filterName, vehicleMake, setSearch }) => {
 	return (
 		filterName === 'Make' ?
 			<div className='MYP'>
-				{vehicleMake.map((elem, index) => <button key={index} onClick={() => setSearch(`where make = '${elem.name}'`)}>{elem.name}</button>)}
+				{vehicleMake &&vehicleMake.map((elem, index) => <button key={index} onClick={() => setSearch(`where make = '${elem.name}'`)}>{elem.name}</button>)}
 			</div> : 
 		filterName === 'Year' ?
 			<div className='MYP'>

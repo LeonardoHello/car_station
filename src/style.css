@@ -184,14 +184,6 @@ button {
   padding: 0 2rem;
 }
 
-#paging > * {
-  font-size: 2rem;
-}
-
-#paging p {
-  text-align: center;
-}
-
 .opacity_0 {
   opacity: 0;
 }
@@ -204,11 +196,19 @@ button {
   left: 4rem;
 }
 
+.all_color_white p:not(.list p:last-of-type), .all_color_white a {
+  color: white;
+}
+
 .color_white {
   color: rgba(240, 248, 255, 0.822);
 }
 
 .color_gray {
+  color: #707a8a7d;
+}
+
+.color_gray  {
   color: #707a8a7d;
 }
 

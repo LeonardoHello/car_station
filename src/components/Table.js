@@ -10,36 +10,38 @@ const Table = ({ brightness }) => {
 	const [vehicleMake, setVehicleMake] = useState();
 	const [vehicles, setVehicles] = useState();
 	const [search, setSearch] = useState();
-	const [limit, setLimit] = useState(10);
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState();
 	const [sort, setSort] = useState();
 	const [order, setOrder] = useState();
 	const [displayFilter, setDisplayFilter] = useState(false);
 	const [filter, setFilter] = useState();
+	
 	const edit = ["Make", "Name", "Year", "Price"];
 	const filterEdit = [edit[0], ...edit.slice(2)];
-
+	
 	useEffect(() => {
-		axios({
-			method: "get",
-			url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleMake",
-			params: {
-				rpp: 50
-			},
-			headers: {
-				"Content-Type": "application/json"
-			}
-		}).then(res => setVehicleMake(res.data.item))
-		.catch(err => console.error(err));
-	}, []);
+		if (filter === "Make") {
+			axios({
+				method: "get",
+				url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleMake",
+				params: {
+					rpp: 50
+				},
+				headers: {
+					"Content-Type": "application/json"
+				}
+			}).then(res => setVehicleMake(res.data.item))
+			.catch(err => console.error(err));
+		}
+	}, [filter])
 
  	useEffect(() => {
 		axios({
 			method: "get",
 			url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel",
 			params: {
-				rpp: limit,
+				rpp: 10,
 				page: page,
 				sort: sort && `${sort}|${order}`,
 				searchQuery: search
@@ -52,28 +54,11 @@ const Table = ({ brightness }) => {
 			setTotalPages(Math.ceil(res.data.totalRecords/res.data.recordsPerPage))
 		})
 		.catch(err => console.error(err));
+	}, [page, totalPages, sort, order, search]);
 
-		if (page === 1) {
-			document.getElementById('prev').classList.add('color_gray');
-		} else {
-			document.getElementById('prev').classList.remove('color_gray');
-		}
-		if (page === totalPages) {
-			document.getElementById('next').classList.add('color_gray');
-		} else {
-			document.getElementById('next').classList.remove('color_gray');
-		}
-
-		if (brightness) {
-			document.getElementById('thead').classList.replace('moon_color_bg', 'sun_color_bg');
-			[...document.querySelectorAll('.list')].map(elem => elem.classList.replace('moon_color_border', 'sun_color_border'));
-			[...document.querySelectorAll('p:not(.list p:last-of-type), a, #paging button')].map(elem => elem.classList.remove('color_white'));
-		} else {
-			document.getElementById('thead').classList.replace('sun_color_bg', 'moon_color_bg');
-			[...document.querySelectorAll('.list')].map(elem => elem.classList.replace('sun_color_border', 'moon_color_border'));
-			[...document.querySelectorAll('p:not(.list p:last-of-type), a, #paging button')].map(elem => elem.classList.add('color_white'));
-		}
-	}, [limit, page, totalPages, sort, order, search]);
+	useEffect(() => {
+		setPage(1);
+	}, [search]);
 
 	const closeFilter = () => {
 		setDisplayFilter(prev => !prev);
@@ -109,7 +94,7 @@ const Table = ({ brightness }) => {
 		})
 	} */
 	return (
-		<main id='table'>
+		<main id='table' className={!brightness ? 'all_color_white' : ''}>
 			<div id='filter'>
 				<button onClick={closeFilter}>Filter</button>
 				{displayFilter && (
@@ -126,7 +111,7 @@ const Table = ({ brightness }) => {
 					/> 
 				: null)}
 			</div>
-			<div id='thead' className='sun_color_bg'>
+			<div id='thead' className={brightness ? 'sun_color_bg' : 'moon_color_bg'}>
 				{edit.map((elem, index) => 
 					<TableHead 
 						key={index}
@@ -139,7 +124,7 @@ const Table = ({ brightness }) => {
 					/>)}
 			</div>
 			{vehicles && vehicles.map((elem, index) => (
-				<div key={index} className="list sun_color_border" >
+				<div key={index} className={`list ${brightness ? 'sun_color_border' : 'moon_color_border'}`}>
 					<p>{elem.make.split('-').join(' ')}</p>
 					<p>{elem.name.split('-').join(' ')}</p>
 					<p>{elem.year}</p>
@@ -148,9 +133,9 @@ const Table = ({ brightness }) => {
 				</div>
 			))}
 			<div id='paging'>
-				<button id='prev' onClick={() => page > 1 ? setPage(prev => prev-1) : null}>PREVIOUS</button>
+				<button className={page <= 1 ? 'color_gray' : !brightness ? 'color_white' : ''} onClick={() => page > 1 ? setPage(prev => prev-1) : null}>PREVIOUS</button>
 				<p>{`${page}/${totalPages}`}</p>
-				<button id='next' onClick={() => page < totalPages ? setPage(prev => prev+1) : null}>NEXT</button>
+				<button className={page >= totalPages  ? 'color_gray' : !brightness ? 'color_white' : ''} onClick={() => page < totalPages ? setPage(prev => prev+1) : null}>NEXT</button>
 			</div>
 		</main>
 	)
