@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 import useAuth from '../useAuth';
@@ -71,7 +71,7 @@ const EditCarInfo = ({ id, name, make, year, price, brightness }) => {
 			/>
 			<button id='save'>
 				<Link 
-					to={newName && newYear && newPrice ? `../${make}/${newName.trim().split(' ').join('-')}` : './'} 
+					to={"/car-search"} 
 					onClick={editingVehicle}
 				>Save
 				</Link></button>
