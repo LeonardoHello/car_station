@@ -5,10 +5,11 @@ import useAuth from "../useAuth";
 import TableHead from './TableHead';
 import Filter from './Filter';
 
-const Table = ({ brightness }) => {
+const Table = ({ brightness, vehicleModel }) => {
 	const accessToken = useAuth();
 	const [vehicleMake, setVehicleMake] = useState();
 	const [vehicles, setVehicles] = useState();
+	const [vehicleYears, setVehicleYears] = useState([]);
 	const [search, setSearch] = useState();
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState();
@@ -16,25 +17,12 @@ const Table = ({ brightness }) => {
 	const [order, setOrder] = useState();
 	const [displayFilter, setDisplayFilter] = useState(false);
 	const [filter, setFilter] = useState();
-	
 	const edit = ["Make", "Name", "Year", "Price"];
 	const filterEdit = [edit[0], ...edit.slice(2)];
-	
+
 	useEffect(() => {
-		if (filter === "Make") {
-			axios({
-				method: "get",
-				url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleMake",
-				params: {
-					rpp: 50
-				},
-				headers: {
-					"Content-Type": "application/json"
-				}
-			}).then(res => setVehicleMake(res.data.item))
-			.catch(err => console.error(err));
-		}
-	}, [filter])
+		setPage(1);
+	}, [search]);
 
  	useEffect(() => {
 		axios({
@@ -49,7 +37,8 @@ const Table = ({ brightness }) => {
 			headers: {
 				"Content-Type": "application/json"
 			}
-		}).then(res => {
+		})
+		.then(res => {
 			setVehicles(res.data.item); 
 			setTotalPages(Math.ceil(res.data.totalRecords/res.data.recordsPerPage))
 		})
@@ -57,8 +46,26 @@ const Table = ({ brightness }) => {
 	}, [page, totalPages, sort, order, search]);
 
 	useEffect(() => {
-		setPage(1);
-	}, [search]);
+		if (vehicleModel && vehicleModel.find(elem => !vehicleYears.includes(elem.year))) {
+			const year = vehicleModel && vehicleModel.find(elem => !vehicleYears.includes(elem.year))
+			setVehicleYears(prev => [...prev, year.year])
+		}
+	}, [vehicleModel, vehicleYears])
+
+	const gettingManufacturers = () => {
+		axios({
+			method: "get",
+			url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleMake",
+			params: {
+				rpp: 50
+			},
+			headers: {
+				"Content-Type": "application/json"
+			}
+		})
+		.then(res => setVehicleMake(res.data.item))
+		.catch(err => console.error(err));
+	}
 
 	const closeFilter = () => {
 		setDisplayFilter(prev => !prev);
@@ -94,12 +101,19 @@ const Table = ({ brightness }) => {
 		})
 	} */
 	return (
-		<main id='table' className={!brightness ? 'all_color_white' : ''}>
+		<main className={!brightness ? 'all_color_white' : ''}>
 			<div id='filter'>
-				<button onClick={closeFilter}>Filter</button>
+				<div id=''>
+					<button onClick={closeFilter}>Filter</button>
+					<button><Link to={'create'}>Create new car</Link></button>
+				</div>
+				
 				{displayFilter && (
 					<div>
-						{filterEdit.map((elem, index) => <button key={index} onClick={() => setFilter(elem)}>{elem}</button>)}
+						{filterEdit.map((elem, index) => <button key={index} onClick={() => {
+							setFilter(elem); 
+							if (elem === "Make") gettingManufacturers()
+						}}>{elem}</button>)}
 					</div>
 				)}
 				{filterEdit.map((elem, index) => elem === filter ?
@@ -107,7 +121,9 @@ const Table = ({ brightness }) => {
 						key={index} 
 						filterName={elem}
 						vehicleMake={vehicleMake}
+						vehicleModel={vehicleModel}
 						setSearch={setSearch}
+						vehicleYears={vehicleYears}
 					/> 
 				: null)}
 			</div>
@@ -124,12 +140,12 @@ const Table = ({ brightness }) => {
 					/>)}
 			</div>
 			{vehicles && vehicles.map((elem, index) => (
-				<div key={index} className={`list ${brightness ? 'sun_color_border' : 'moon_color_border'}`}>
+				<div key={index} className={`list ${brightness ? 'sun_color_border sun_color_hover' : 'moon_color_border moon_color_hover'}`}>
 					<p>{elem.make.split('-').join(' ')}</p>
 					<p>{elem.name.split('-').join(' ')}</p>
 					<p>{elem.year}</p>
 					<p>{`$${elem.price.toLocaleString('en-US')}`}</p>
-					<p><Link to={`/car-search/${elem.make}/${elem.name}`}>details</Link></p>
+					<p><Link to={`${elem.make}/${elem.name}`}>details</Link></p>
 				</div>
 			))}
 			<div id='paging'>

@@ -4,16 +4,17 @@
   margin: 0;
   line-height: 1;
   font-family: 'Poppins', sans-serif;
-  transition: background-color .3s, color .3s, fill .3s;
+  transition: background-color .3s, color .3s, fill .3s, border-color .3s, filter .3s;
 }
 
 a {
-  color: currentColor;
+  color: black;
   text-decoration: unset;
   text-align: end;
   border-radius: .3rem;
   font-weight: 300;
   cursor: pointer;
+  border-color: rgba(0, 0, 0, 0.477);
 }
 
 html {
@@ -26,7 +27,7 @@ html {
   align-items: center;
   min-height: 100vh;
   font-size: 1.6rem;
-  padding: 2rem 1.5rem 4rem 1.5rem;
+  padding: 2rem 1.5rem 6rem 1.5rem;
   gap: 3rem;
 }
 
@@ -37,15 +38,28 @@ html {
 header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
 }
 
 #logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 500;
   letter-spacing: -1px;
   word-break: break-word;
   color: transparent;
   background-clip: text;
+  flex-grow: 2;
+}
+
+#logo a {
+  font-size: 4rem;
+  color: transparent;
+  font-weight: 500;
+  text-align: center;
 }
 
 #brightness {
@@ -75,10 +89,14 @@ header {
 button {
   background-color: unset;
   border: unset;
-  border-radius: .3rem;
+  border-radius: .5rem;
   font-size: 1.8rem;
   user-select: none;
   cursor: pointer;
+}
+
+button:hover, a:not(#logo a):hover {
+  filter: opacity(.6);
 }
 
 #filter {
@@ -91,23 +109,26 @@ button {
 }
 
 #filter button {
-  color: gray;
-  border: 1px solid gray;
+  font-weight: 300;
+  border: 1px solid rgba(0, 0, 0, 0.477);
   padding: .4em 1.5em;
-  white-space: nowrap;
 }
 
 #filter > div:first-of-type  {
   display: flex;
+  justify-content: space-between;
   gap: 1rem;
 }
 
-#filter > div:first-of-type > * {
-  flex-basis: 100%;
+#filter > div:nth-of-type(2) {
+  display: flex;
+  overflow-x: scroll;
+  gap: 1rem;
+  padding-bottom: 1rem;
 }
 
-#filter > div:first-of-type button {
-  font-size: 1.4rem;
+#filter > div:nth-of-type(2) > * {
+  flex-basis: 100%;
 }
 
 .MYP {
@@ -119,6 +140,7 @@ button {
 
 #thead {
   display: grid;
+  gap: 1rem;
   grid-template-columns: repeat(5, 1fr);
   padding: 1rem 2rem;
   border-radius: .5rem;
@@ -142,6 +164,10 @@ button {
   cursor: pointer;
 }
 
+#thead p {
+  user-select: none;
+}
+
 .list {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -149,8 +175,8 @@ button {
   gap: 1rem;
 }
 
-.list:hover {
-  background-image: linear-gradient(to right,#ff008010, #ff8c0010);
+.list p {
+  font-size: 1.4rem;
 }
 
 .list > * {
@@ -184,6 +210,134 @@ button {
   padding: 0 2rem;
 }
 
+#car_info_main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+#car_info_main img {
+  border-radius: .3rem;
+}
+
+#car_info_main > p {
+  font-size: 1.8rem;
+  line-height: 1.5em;
+}
+
+#edit_btns {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#edit_btns > *, #car_info_form_main > p {
+  display: flex;
+  align-items: center;
+}
+
+#edit_btns a, #car_info_form_main a {
+  padding: .5em 1em;
+  border-width: 1px;
+  border-style: solid;
+}
+
+#car_info_form_main {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+#car_info_form_main h1 {
+  font-size: 2.3rem;
+  font-weight: 600;
+}
+
+#form {
+  display: flex;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  width: min(50rem, 100%);
+  gap: 2rem;
+  padding: 4rem 3rem;
+  border-radius: .5rem;
+}
+
+#form > button {
+  display: flex;
+  justify-content: center;
+}
+
+#form a {
+  border: unset;
+  flex-grow: 2;
+  text-align: center;
+  color: white;
+  font-weight: 400;
+}
+
+#form a:hover {
+  opacity: .6;
+}
+
+#save {
+  margin-top: 2rem;
+  background-color: #a3dafb;
+}
+
+#delete {
+  background-color: #ff0080;
+}
+
+#cancle {
+  background-color: #423e87;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+label {
+  font-weight: 500;
+  font-size: 1.8rem;
+}
+
+input {
+  border: unset;
+  padding: 1rem;
+  font-size: 1.6rem;
+  outline: unset;
+  border-radius: .5rem;
+  transition: outline .2s;
+  background-color: rgb(255, 255, 255);
+}
+
+input::placeholder {
+  color: rgba(128, 128, 128, 0.566);
+}
+
+#form div:first-of-type {
+  pointer-events: none;
+}
+
+#form #manufacturer {
+  color: rgba(128, 128, 128, 0.566);
+}
+
+#error {
+  display: flex;
+  justify-content: end;
+  color: red;
+}
+
+.all_color_white p:not(.list p:last-of-type), .all_color_white a, .all_color_white button:not(#paging button), .all_color_white i, .all_color_white h2, .all_color_white h1, .all_color_white label {
+  color: white;
+  border-color: white;
+}
+
 .opacity_0 {
   opacity: 0;
 }
@@ -196,16 +350,8 @@ button {
   left: 4rem;
 }
 
-.all_color_white p:not(.list p:last-of-type), .all_color_white a {
-  color: white;
-}
-
 .color_white {
   color: rgba(240, 248, 255, 0.822);
-}
-
-.color_gray {
-  color: #707a8a7d;
 }
 
 .color_gray  {
@@ -245,20 +391,55 @@ button {
   border-bottom: 1px solid #8983f745;
 }
 
-@media only screen and (min-width: 600px) {
+.sun_color_hover:hover {
+  background-image: linear-gradient(to right,#ff008010, #ff8c0010);
+}
+
+.moon_color_hover:hover {
+  background-image: linear-gradient(to right,#a3dafb10, #8983f710);
+}
+
+.sun_color_outline input {
+  background-color: white;
+}
+
+.moon_color_outline input {
+  background-color: rgba(240, 248, 255, 0.943);
+}
+
+.sun_color_outline input:focus {
+  outline: 2px solid #ff8c00;
+}
+
+.moon_color_outline input:focus {
+  outline: 2px solid #8983f7;
+}
+
+.input .red_color_outline:focus {
+  outline: 2px solid red;
+}
+
+.user_select_none {
+  user-select: none;
+}
+
+@media only screen and (min-width: 336px) {
+  #logo {
+    justify-content: unset;
+  }
+}
+
+@media only screen and (min-width: 800px) {
   #filter > button {
     max-width: fit-content;
   }
 
-  #filter > div:first-of-type > * {
-    flex-basis: unset;
-  }
+
 }
 
 @media only screen and (min-width: 1000px) {
-
   #root {
-    padding: 3rem 4rem;
+    padding: 3rem 4rem 4rem;
     font-size: 1.8rem;
   }
 
@@ -266,11 +447,19 @@ button {
     font-size: 1.4rem;
   }
 
-  #table {
-    max-width: 100rem;
+  #logo a {
+    font-size: 5rem;
   }
 
-  h1 {
-    font-size: 5rem;
+  h2 {
+    font-size: 3.5rem;
+  }
+
+  #car_info_main > p {
+    font-size: 2rem;
+  }
+
+  .list p {
+    font-size: 1.8rem;
   }
 }

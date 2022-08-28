@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 import Table from "./components/Table";
 import Header from "./components/Header";
 import CarInfo from "./components/CarInfo";
+import EditCarInfo from "./components/EditCarInfo";
 
 const App = () => {
   const [brightness, setBrightness] = useState(true);
@@ -25,17 +26,28 @@ const App = () => {
 
   return (
     <Routes>
-      <Route element={<Header brightness={brightness} setBrightness={setBrightness} />}>
-        <Route path="/car-search" element={<Table brightness={brightness} />}/>
+      <Route path="/car-search" element={<Header brightness={brightness} setBrightness={setBrightness} />}>
+        <Route path="" element={<Table brightness={brightness} vehicleModel={vehicleModel} />}/>
         {vehicleModel && (
-          vehicleModel.map((elem, index) => <Route key={index} path={`/car-search/${elem.make}/${elem.name}`} element={
+          vehicleModel.map((elem, index) => <Route key={index} path={`${elem.make}/${elem.name}`} element={
             <CarInfo 
+              name={elem.name.split('-').join(' ')}
+              make={elem.make.split('-').join(' ')}
+              year={elem.year}
+              price={elem.price}
+              brightness={brightness}
+            />}
+          />)
+        )}
+        {vehicleModel && (
+          vehicleModel.map((elem, index) => <Route key={index} path={`${elem.make}/${elem.name}/edit`} element={
+            <EditCarInfo 
               name={elem.name}
               make={elem.make}
               year={elem.year}
               price={elem.price}
               id={elem.id}
-              makeId={elem.makeId} 
+              brightness={brightness}
             />}
           />)
         )}

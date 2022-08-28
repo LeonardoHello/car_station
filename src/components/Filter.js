@@ -1,12 +1,12 @@
-const Filter = ({ filterName, vehicleMake, setSearch }) => {
+const Filter = ({ filterName, vehicleMake, vehicleYears, setSearch }) => {
 	return (
 		filterName === 'Make' ?
 			<div className='MYP'>
-				{vehicleMake &&vehicleMake.map((elem, index) => <button key={index} onClick={() => setSearch(`where make = '${elem.name}'`)}>{elem.name}</button>)}
+				{vehicleMake && vehicleMake.map((elem, index) => <button key={index} onClick={() => setSearch(`where make = '${elem.name}'`)}>{elem.name}</button>)}
 			</div> : 
 		filterName === 'Year' ?
-			<div className='MYP'>
-				{['2015', '2016', '2017'].map((elem, index) => <button key={index} onClick={() => setSearch(`where year = ${elem}`)}>{elem}</button>)}
+			<div className='MYP filter_year'>
+				{vehicleYears.sort().map((elem, index) => <button key={index} onClick={() => setSearch(`where year = ${elem}`)}>{elem}</button>)}
 			</div> :
 		filterName === 'Price' ?
 			<div className='MYP'>
