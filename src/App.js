@@ -5,10 +5,26 @@ import Table from "./components/Table";
 import Header from "./components/Header";
 import CarInfo from "./components/CarInfo";
 import EditCarInfo from "./components/EditCarInfo";
+import CreateCar from "./components/CreateCar";
 
 const App = () => {
   const [brightness, setBrightness] = useState(true);
   const [vehicleModel, setVehicleModel] = useState();
+  const [vehicleMake, setVehicleMake] = useState();
+
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleMake",
+      params: {
+        rpp: 1000
+      },
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }).then(res => setVehicleMake(res.data.item))
+    .catch(err => console.error(err));
+  }, [])
 
   useEffect(() => {
     axios({
@@ -31,8 +47,8 @@ const App = () => {
         {vehicleModel && (
           vehicleModel.map((elem, index) => <Route key={index} path={`${elem.make}/${elem.name}`} element={
             <CarInfo 
-              name={elem.name.split('-').join(' ')}
-              make={elem.make.split('-').join(' ')}
+              name={elem.name.replace(/\-+/g, ' ')}
+              make={elem.make.replace(/\-+/g, ' ')}
               year={elem.year}
               price={elem.price}
               brightness={brightness}
@@ -51,6 +67,14 @@ const App = () => {
             />}
           />)
         )}
+        <Route path="create" element={
+          <CreateCar 
+            brightness={brightness} 
+            vehicleModel={vehicleModel}
+            vehicleMake={vehicleMake}
+            setVehicleMake={setVehicleMake}
+          />} 
+        />
       </Route>
     </Routes>
   );

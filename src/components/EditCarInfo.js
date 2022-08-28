@@ -7,7 +7,7 @@ import CarInfoForm from "./CarInfoForm";
 
 const EditCarInfo = ({ id, name, make, year, price, brightness }) => {
 	const accessToken = useAuth();
-	const [newName, setNewName] = useState(name.split('-').join(' '));
+	const [newName, setNewName] = useState(name.replace(/\-+/g, ' '));
 	const [newYear, setNewYear] = useState(year);
 	const [newPrice, setNewPrice] = useState(price);
 
@@ -21,7 +21,7 @@ const EditCarInfo = ({ id, name, make, year, price, brightness }) => {
 					"Content-Type": "application/json"
 				},
 				data: {
-					name: newName.trim().split(' ').join('-'),
+					name: newName.trim().toLowerCase().replace(/\s+/g, '-'),
 					price: newPrice,
 					year: newYear,
 				}
@@ -43,14 +43,15 @@ const EditCarInfo = ({ id, name, make, year, price, brightness }) => {
 
 	return (
 		<CarInfoForm 
-			heading={`'${make.split('-').join(' ')}, ${name.trim().split('-').join(' ')}'`} 
+			heading={`'${make.replace(/\-+/g, ' ')}, ${name.trim().replace(/\-+/g, ' ')}'`} 
 			path={`../${make}/${name}`} 
 			brightness={brightness} 
 			formType={'Edit'}
 		>
 			<Input
 				label={"Manufacturer"}
-				data={make.split('-').join(' ')}
+				data={make.replace(/\-+/g, ' ')}
+				styles={'pointer_events_none'}
 			/>
 			<Input
 				label={"Model"}
@@ -70,20 +71,12 @@ const EditCarInfo = ({ id, name, make, year, price, brightness }) => {
 				type="number"
 			/>
 			<button id='save'>
-				<Link 
-					to={"/car-search"} 
-					onClick={editingVehicle}
-				>Save
-				</Link></button>
+				<Link to={`../${make}/${newName.trim().toLowerCase().replace(/\s+/g, '-')}`} onClick={editingVehicle}>Save</Link></button>
 			<button id='delete'>
-				<Link
-					to={"/car-search"} 
-					onClick={deletingVehicle}
-				>Delete
-				</Link>
+				<Link to={"/car-search"} onClick={deletingVehicle}>Delete</Link>
 			</button>
 			<button id='cancle'>
-				<Link to={`../${make}/${name}`}>Cancle</Link>
+				<Link to={"/car-search"}>Cancle</Link>
 			</button>
 		</CarInfoForm>
 	)

@@ -141,8 +141,8 @@ const Table = ({ brightness, vehicleModel }) => {
 			</div>
 			{vehicles && vehicles.map((elem, index) => (
 				<div key={index} className={`list ${brightness ? 'sun_color_border sun_color_hover' : 'moon_color_border moon_color_hover'}`}>
-					<p>{elem.make.split('-').join(' ')}</p>
-					<p>{elem.name.split('-').join(' ')}</p>
+					<p>{elem.make.replace(/\-+/g, ' ')}</p>
+					<p>{elem.name.replace(/\-+/g, ' ')}</p>
 					<p>{elem.year}</p>
 					<p>{`$${elem.price.toLocaleString('en-US')}`}</p>
 					<p><Link to={`${elem.make}/${elem.name}`}>details</Link></p>

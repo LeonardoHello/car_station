@@ -1,7 +1,7 @@
 
-const Input = ({ label, type, data, setData }) => {
+const Input = ({ label, type, data, setData, styles }) => {
 	return (
-		<div className='input'>
+		<div className={`input ${styles || ''}`}>
 			<label htmlFor={label.toLowerCase()}>{label}:</label>
 			<input 
 				className={!data ? 'red_color_outline' : ''}

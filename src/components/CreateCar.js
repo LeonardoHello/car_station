@@ -1,14 +1,49 @@
-const CreateCar = () => {
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import useAuth from "../useAuth";
+import CarInfoForm from "./CarInfoForm"
+import Input from "./Input";
+
+const CreateCar = ({ brightness, vehicleMake, vehicleModel }) => {
+	const accessToken = useAuth();
+	const [newMake, setNewMake] = useState();
+	const [newName, setNewName] = useState();
+	const [newYear, setNewYear] = useState();
+	const [newPrice, setNewPrice] = useState();
+
+	const creatingVehicle = () => {
+
+		console.log('/var/www/site/Brandnewdocument.docx        '.trim().replace(/\s+/g, '-'));
+		// if (vehicleMake && vehicleMake.find(elem => elem.name === newMake.toLowerCase().trim().split(' ').join('-'))) {
+		// 	axios({
+		// 		method: "post",
+		// 		url: `https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleMake`,
+		// 		headers: {
+		// 			Authorization: `bearer ${accessToken}`,
+		// 			"Content-Type": "application/json"
+		// 		},
+		// 		data: {
+		// 			description: 'Manufacturer',
+		// 			name: newMake.includes(' ') ? 
+		// 				newMake.toLowerCase().trim().split(' ').join('-') : 
+		// 				newMake.toLowerCase().trim()
+		// 		}
+		// 	}).then(res => console.log(res.data))
+		// 	.catch(err => console.error(err))
+		// }
+	}
 	return (
 		<CarInfoForm 
-			heading={`Create a new car`} 
-			path={`../${newName}/${setNewName}`} 
+			heading={`a new car`} 
+			path={'/car-search'} 
 			brightness={brightness} 
-			formType={'Edit'}
+			formType={'Create'}
 			>
 			<Input
 				label={"Manufacturer"}
-				data={make.split('-').join(' ')}
+				data={newMake}
+				setData={setNewMake}
 			/>
 			<Input
 				label={"Model"}
@@ -27,18 +62,11 @@ const CreateCar = () => {
 				setData={setNewPrice}
 				type="number"
 			/>
-			<button id='save'>
-				<Link 
-					to={newName && newYear && newPrice ? `../${make}/${newName}` : './'} 
-					onClick={editingVehicle}
-				>Save
-				</Link></button>
-			<button id='delete'>
-				<Link
-					to={"/car-search"} 
-					onClick={deletingVehicle}
-				>Delete
-				</Link>
+			<button id='create'>
+				<Link to={'/car-search'} onClick={creatingVehicle}>Create</Link>
+			</button>
+			<button id='cancle'>
+				<Link to={'/car-search'}>Cancle</Link>
 			</button>
 		</CarInfoForm>
 	)

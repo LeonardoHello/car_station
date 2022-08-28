@@ -134,6 +134,10 @@ button:hover, a:not(#logo a):hover {
   white-space: nowrap;
 }
 
+#filter > div:first-of-type * {
+  white-space: unset;
+}
+
 .MYP {
   overflow-x: scroll;
   display: flex;
@@ -289,6 +293,11 @@ button:hover, a:not(#logo a):hover {
   background-color: #a3dafb;
 }
 
+#create {
+  margin-top: 2rem;
+  background-color: #a3dafb;
+}
+
 #delete {
   background-color: #ff0080;
 }
@@ -322,17 +331,13 @@ input::placeholder {
   color: rgba(128, 128, 128, 0.566);
 }
 
-#form div:first-of-type {
-  pointer-events: none;
-}
-
 #form #manufacturer {
   color: rgba(128, 128, 128, 0.566);
 }
 
 #error {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   color: red;
 }
 
@@ -424,6 +429,10 @@ input::placeholder {
 
 .user_select_none {
   user-select: none;
+}
+
+.pointer_events_none {
+  pointer-events: none;
 }
 
 @media only screen and (min-width: 336px) {
