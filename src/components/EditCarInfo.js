@@ -12,7 +12,9 @@ const EditCarInfo = ({ id, name, make, year, price, brightness }) => {
 	const [newPrice, setNewPrice] = useState(price);
 
 	const editingVehicle = () => {
-		if (newName && newYear && newPrice) {
+		if (newName.trim().replace(/\s+/g, '-').length > 0 && 
+			newYear.toString().length > 0 && 
+			newPrice.toString().length > 0) {
 			axios({
 				method: "patch",
 				url: `https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel/${id}`,
@@ -21,7 +23,7 @@ const EditCarInfo = ({ id, name, make, year, price, brightness }) => {
 					"Content-Type": "application/json"
 				},
 				data: {
-					name: newName.trim().toLowerCase().replace(/\s+/g, '-'),
+					name: newName.toLowerCase().trim().replace(/\s+/g, '-'),
 					price: newPrice,
 					year: newYear,
 				}
@@ -70,8 +72,16 @@ const EditCarInfo = ({ id, name, make, year, price, brightness }) => {
 				setData={setNewPrice}
 				type="number"
 			/>
-			<button id='save'>
-				<Link to={`../${make}/${newName.trim().toLowerCase().replace(/\s+/g, '-')}`} onClick={editingVehicle}>Save</Link></button>
+			<button 
+				id='save' 
+				className={
+					newName.trim().replace(/\s+/g, '-').length > 0 && 
+					newYear.toString().length > 0 && 
+					newPrice.toString().length > 0 ? '' : 'pointer_events_none'
+				}
+			>
+				<Link to={'/car-search'} onClick={editingVehicle}>Save</Link>
+			</button>
 			<button id='delete'>
 				<Link to={"/car-search"} onClick={deletingVehicle}>Delete</Link>
 			</button>

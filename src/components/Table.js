@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
-import useAuth from "../useAuth";
 import TableHead from './TableHead';
 import Filter from './Filter';
 
 const Table = ({ brightness, vehicleModel }) => {
-	const accessToken = useAuth();
 	const [vehicleMake, setVehicleMake] = useState();
 	const [vehicles, setVehicles] = useState();
 	const [vehicleYears, setVehicleYears] = useState([]);
