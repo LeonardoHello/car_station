@@ -32,7 +32,6 @@ const useAuth = () => {
 				url: "https://api.baasic.com/beta/simple-vehicle-app/login",
 				headers: {
 					Authorization: `bearer ${accessToken}`,
-					"Content-Type": "application/json"
 				},
 				data: {
 					type: "bearer",

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 import Table from "./components/Table";
@@ -19,22 +19,14 @@ const App = () => {
       params: {
         rpp: 1000
       },
-      headers: {
-        "Content-Type": "application/json"
-      }
     }).then(res => setVehicleMake(res.data.item))
     .catch(err => console.error(err));
-  }, [])
 
-  useEffect(() => {
     axios({
       method: "get",
       url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel",
       params: {
         rpp: 1000
-      },
-      headers: {
-        "Content-Type": "application/json"
       }
     }).then(res => setVehicleModel(res.data.item))
     .catch(err => console.error(err));
@@ -43,12 +35,20 @@ const App = () => {
   return (
     <Routes>
       <Route path="/car-search" element={<Header brightness={brightness} setBrightness={setBrightness} />}>
-        <Route path="" element={<Table brightness={brightness} vehicleModel={vehicleModel} />}/>
+        <Route path="" element={
+            <Table 
+              brightness={brightness} 
+              vehicleModel={vehicleModel}  
+              vehicleMake={vehicleMake}
+              setVehicleMake={setVehicleMake} 
+            />
+          }
+        />
         {vehicleModel && (
           vehicleModel.map((elem, index) => <Route key={index} path={`${elem.make}/${elem.name}`} element={
             <CarInfo 
-              name={elem.name.replace(/\-+/g, ' ')}
-              make={elem.make.replace(/\-+/g, ' ')}
+              name={elem.name.replace(/-+/g, ' ')}
+              make={elem.make.replace(/-+/g, ' ')}
               year={elem.year}
               price={elem.price}
               brightness={brightness}
@@ -64,15 +64,16 @@ const App = () => {
               price={elem.price}
               id={elem.id}
               brightness={brightness}
+              setVehicleModel={setVehicleModel}
             />}
           />)
         )}
         <Route path="create" element={
           <CreateCar 
             brightness={brightness} 
-            vehicleModel={vehicleModel}
             vehicleMake={vehicleMake}
             setVehicleMake={setVehicleMake}
+            setVehicleModel={setVehicleModel}
           />} 
         />
       </Route>

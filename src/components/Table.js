@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import axios from "axios";
 import TableHead from './TableHead';
 import Filter from './Filter';
+import useAuth from '../useAuth';
 
-const Table = ({ brightness, vehicleModel }) => {
-	const [vehicleMake, setVehicleMake] = useState();
+const Table = ({ brightness, vehicleMake, setVehicleMake, vehicleModel }) => {
+	const accessToken = useAuth()
 	const [vehicles, setVehicles] = useState();
 	const [vehicleYears, setVehicleYears] = useState([]);
 	const [search, setSearch] = useState();
@@ -18,10 +19,6 @@ const Table = ({ brightness, vehicleModel }) => {
 	const edit = ["Make", "Name", "Year", "Price"];
 	const filterEdit = [edit[0], ...edit.slice(2)];
 
-	useEffect(() => {
-		setPage(1);
-	}, [search]);
-
  	useEffect(() => {
 		axios({
 			method: "get",
@@ -32,9 +29,6 @@ const Table = ({ brightness, vehicleModel }) => {
 				sort: sort && `${sort}|${order}`,
 				searchQuery: search
 			},
-			headers: {
-				"Content-Type": "application/json"
-			}
 		})
 		.then(res => {
 			setVehicles(res.data.item); 
@@ -44,11 +38,43 @@ const Table = ({ brightness, vehicleModel }) => {
 	}, [page, totalPages, sort, order, search]);
 
 	useEffect(() => {
-		if (vehicleModel && vehicleModel.find(elem => !vehicleYears.includes(elem.year))) {
-			const year = vehicleModel && vehicleModel.find(elem => !vehicleYears.includes(elem.year))
-			setVehicleYears(prev => [...prev, year.year])
+		if (!vehicleModel) return
+		const years = [];
+		vehicleModel.map(elem => !years.includes(elem.year) ? years.push(elem.year) : null);
+		setVehicleYears(years);
+	}, [vehicleModel]);
+
+	useEffect(() => {
+		setPage(1);
+	}, [search]);
+
+	const deleting = async (schema, field, operator, name) => {
+		try {
+			const gettingData = await axios({
+				method: "get",
+				url: `https://api.baasic.com/beta/simple-vehicle-app/resources/${schema}`,
+				params: {
+					rpp: 200,
+					searchQuery: `where ${field} ${operator} ${name}`
+				}
+			})
+			try {
+				await gettingData.data.item.map(async elem => {
+					await axios({
+						method: "delete",
+						url: `https://api.baasic.com/beta/simple-vehicle-app/resources/${schema}/${elem.id}`,
+						headers: {
+							Authorization: `bearer ${accessToken}`,
+						}
+					})
+				})
+			} finally {
+				console.log('doggo');
+			}
+		} catch (err) {
+			console.error(err);
 		}
-	}, [vehicleModel, vehicleYears])
+	}
 
 	const gettingManufacturers = () => {
 		axios({
@@ -69,6 +95,7 @@ const Table = ({ brightness, vehicleModel }) => {
 		setDisplayFilter(prev => !prev);
 		setFilter();
 		setSearch();
+		// deleting('VehicleMake', 'name', '=', "'aka'");
 	}
 
 	/* const send = () => {
@@ -101,9 +128,9 @@ const Table = ({ brightness, vehicleModel }) => {
 	return (
 		<main className={!brightness ? 'all_color_white' : ''}>
 			<div id='filter'>
-				<div id=''>
+				<div>
 					<button onClick={closeFilter}>Filter</button>
-					<button><Link to={'create'}>Create new car</Link></button>
+					<button id='create_btn'><Link to={'create'}>Create new car</Link></button>
 				</div>
 				
 				{displayFilter && (
@@ -138,9 +165,9 @@ const Table = ({ brightness, vehicleModel }) => {
 					/>)}
 			</div>
 			{vehicles && vehicles.map((elem, index) => (
-				<div key={index} className={`list ${brightness ? 'sun_color_border sun_color_hover' : 'moon_color_border moon_color_hover'}`}>
-					<p>{elem.make.replace(/\-+/g, ' ')}</p>
-					<p>{elem.name.replace(/\-+/g, ' ')}</p>
+				<div onClick={() => console.log(elem.make_id)} key={index} className={`list ${brightness ? 'sun_color_border sun_color_hover' : 'moon_color_border moon_color_hover'}`}>
+					<p>{elem.make.replace(/-+/g, ' ')}</p>
+					<p>{elem.name.replace(/-+/g, ' ')}</p>
 					<p>{elem.year}</p>
 					<p>{`$${elem.price.toLocaleString('en-US')}`}</p>
 					<p><Link to={`${elem.make}/${elem.name}`}>details</Link></p>

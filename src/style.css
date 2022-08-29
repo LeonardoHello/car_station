@@ -108,10 +108,22 @@ button:hover, a:not(#logo a):hover {
   gap: 1rem;
 }
 
-#filter button {
+#filter button:not(#create_btn) {
   font-weight: 300;
   border: 1px solid rgba(0, 0, 0, 0.477);
   padding: .4em 1.5em;
+}
+
+#create_btn  {
+  display: flex;
+  align-items: center;
+  font-weight: 300;
+  border: 1px solid rgba(0, 0, 0, 0.477);
+}
+
+#create_btn a {
+  padding: .4em 1.5em;
+  text-align: center;
 }
 
 #filter > div:first-of-type  {
