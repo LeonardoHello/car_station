@@ -12,7 +12,7 @@ const Header = ({ brightness, setBrightness }) => {
 	return (
 		<>
 			<header>
-				<h1 id='logo' className={brightness ? 'sun_color' : 'moon_color'}><Link to={""}>Car Search</Link></h1>
+				<h1 id='logo' className={brightness ? 'sun_color' : 'moon_color'}><Link to={"/"}>Car Search</Link></h1>
 				<div id='brightness' onClick={() => setBrightness(prev => !prev)}>
 					<span className={`material-symbols-outlined left sun_color ${brightness ? 'left' : 'right opacity_0'}`}>radio_button_unchecked</span>
 					<span className={`material-symbols-outlined left moon_color ${brightness ? 'left opacity_0' : 'right'}`}>dark_mode</span>

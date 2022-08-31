@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import useAuth from "../useAuth";
-import CarInfoForm from "./CarInfoForm"
+import Form from "./Form"
 import Input from "./Input";
 
 const CreateCar = ({ brightness, vehicleMake, setVehicleMake, setVehicleModel }) => {
@@ -17,7 +17,7 @@ const CreateCar = ({ brightness, vehicleMake, setVehicleMake, setVehicleModel })
 		if (!existingMake) {
 			console.log("doesn't exist");
 			try {
-				const addingMake = await axios({
+				const creatingMake = await axios({
 					method: "post",
 					url: `https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleMake`,
 					headers: {
@@ -38,8 +38,8 @@ const CreateCar = ({ brightness, vehicleMake, setVehicleMake, setVehicleModel })
 						data: {
 							description: 'Model',
 							name: newName.toLowerCase().trim().replace(/\s+/g, '-'),
-							make: addingMake.data.name,
-							make_id: addingMake.data.id,
+							make: creatingMake.data.name,
+							make_id: creatingMake.data.id,
 							year: parseInt(newYear),
 							price: parseInt(newPrice)
 						}
@@ -99,12 +99,12 @@ const CreateCar = ({ brightness, vehicleMake, setVehicleMake, setVehicleModel })
 	}
 
 	return (
-		<CarInfoForm 
+		<Form 
 			heading={`a new car`} 
-			path={'/car-search'} 
+			path={'/'} 
 			brightness={brightness} 
 			formType={'Create'}
-			>
+		>
 			<Input
 				label={"Manufacturer"}
 				data={newMake}
@@ -139,9 +139,9 @@ const CreateCar = ({ brightness, vehicleMake, setVehicleMake, setVehicleModel })
 				<Link to={`../${newMake.toLowerCase().trim().replace(/\s+/g, '-')}/${newName.toLowerCase().trim().replace(/\s+/g, '-')}`} onClick={creatingVehicle}>Create</Link>
 			</button>
 			<button id='cancle'>
-				<Link to={'/car-search'}>Cancle</Link>
+				<Link to={'/'}>Cancle</Link>
 			</button>
-		</CarInfoForm>
+		</Form>
 	)
 }
 

@@ -4,7 +4,7 @@ import axios from "axios";
 import Table from "./components/Table";
 import Header from "./components/Header";
 import CarInfo from "./components/CarInfo";
-import EditCarInfo from "./components/EditCarInfo";
+import EditCar from "./components/EditCar";
 import CreateCar from "./components/CreateCar";
 
 const App = () => {
@@ -34,8 +34,8 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path="/car-search" element={<Header brightness={brightness} setBrightness={setBrightness} />}>
-        <Route path="" element={
+      <Route element={<Header brightness={brightness} setBrightness={setBrightness} />}>
+        <Route path="/" element={
             <Table 
               brightness={brightness} 
               vehicleModel={vehicleModel}  
@@ -45,7 +45,7 @@ const App = () => {
           }
         />
         {vehicleModel && (
-          vehicleModel.map((elem, index) => <Route key={index} path={`${elem.make}/${elem.name}`} element={
+          vehicleModel.map((elem, index) => <Route key={index} path={`/${elem.make}/${elem.name}`} element={
             <CarInfo 
               name={elem.name.replace(/-+/g, ' ')}
               make={elem.make.replace(/-+/g, ' ')}
@@ -56,8 +56,8 @@ const App = () => {
           />)
         )}
         {vehicleModel && (
-          vehicleModel.map((elem, index) => <Route key={index} path={`${elem.make}/${elem.name}/edit`} element={
-            <EditCarInfo 
+          vehicleModel.map((elem, index) => <Route key={index} path={`/${elem.make}/${elem.name}/edit`} element={
+            <EditCar 
               name={elem.name}
               make={elem.make}
               year={elem.year}
@@ -68,7 +68,7 @@ const App = () => {
             />}
           />)
         )}
-        <Route path="create" element={
+        <Route path="/create" element={
           <CreateCar 
             brightness={brightness} 
             vehicleMake={vehicleMake}

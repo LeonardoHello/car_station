@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 import useAuth from '../useAuth';
+import Form from "./Form";
 import Input from './Input';
-import CarInfoForm from "./CarInfoForm";
 
-const EditCarInfo = ({ id, name, make, year, price, brightness, setVehicleModel }) => {
+const EditCar = ({ id, name, make, year, price, brightness, setVehicleModel }) => {
 	const accessToken = useAuth();
 	const [newName, setNewName] = useState(name.replace(/-+/g, ' '));
 	const [newYear, setNewYear] = useState(year);
@@ -51,7 +51,7 @@ const EditCarInfo = ({ id, name, make, year, price, brightness, setVehicleModel 
 	}
 
 	return (
-		<CarInfoForm 
+		<Form 
 			heading={`'${make.replace(/-+/g, ' ')}, ${name.trim().replace(/-+/g, ' ')}'`} 
 			path={`../${make}/${name}`} 
 			brightness={brightness} 
@@ -90,13 +90,13 @@ const EditCarInfo = ({ id, name, make, year, price, brightness, setVehicleModel 
 				<Link to={`../${make}/${newName.toLowerCase().trim().replace(/\s+/g, '-')}`} onClick={editingVehicle}>Save</Link>
 			</button>
 			<button id='delete'>
-				<Link to={"/car-search"} onClick={deletingVehicle}>Delete</Link>
+				<Link to={"/"} onClick={deletingVehicle}>Delete</Link>
 			</button>
 			<button id='cancle'>
-				<Link to={"/car-search"}>Cancle</Link>
+				<Link to={"/"}>Cancle</Link>
 			</button>
-		</CarInfoForm>
+		</Form>
 	)
 }
 
-export default EditCarInfo
+export default EditCar

@@ -97,8 +97,8 @@ const Table = ({ brightness, vehicleMake, setVehicleMake, vehicleModel }) => {
 		setSearch();
 		// deleting('VehicleMake', 'name', '=', "'aka'");
 	}
-
-	/* const send = () => {
+/*
+	const send = () => {
 		if (!vehicleModel) return
 		vehicleModel.map(elemA => {
 			vehicleMake.map(elemB => {
@@ -108,7 +108,6 @@ const Table = ({ brightness, vehicleMake, setVehicleMake, vehicleModel }) => {
 						url: `https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel`,
 						headers: {
 							Authorization: `bearer ${accessToken}`,
-							"Content-Type": "application/json"
 						},
 						data: {
 							description: 'Model',
@@ -124,7 +123,8 @@ const Table = ({ brightness, vehicleMake, setVehicleMake, vehicleModel }) => {
 				}
 			})
 		})
-	} */
+	}
+	*/
 	return (
 		<main className={!brightness ? 'all_color_white' : ''}>
 			<div id='filter'>
