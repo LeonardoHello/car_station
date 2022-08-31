@@ -7,6 +7,7 @@ import Input from "./Input";
 
 const CreateCar = ({ brightness, vehicleMake, setVehicleMake, setVehicleModel }) => {
 	const accessToken = useAuth();
+	const [newCarId, setNewCarId] = useState();
 	const [newMake, setNewMake] = useState('');
 	const [newName, setNewName] = useState('');
 	const [newYear, setNewYear] = useState('');
@@ -29,7 +30,7 @@ const CreateCar = ({ brightness, vehicleMake, setVehicleMake, setVehicleModel })
 					}
 				})
 				try {
-					await axios({
+					const newModel = await axios({
 						method: "post",
 						url: `https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel`,
 						headers: {
@@ -44,6 +45,7 @@ const CreateCar = ({ brightness, vehicleMake, setVehicleMake, setVehicleModel })
 							price: parseInt(newPrice)
 						}
 					})
+					setNewCarId(newModel.data)
 				} finally {
 					const gettingMakes = await axios({
 						method: "get",
@@ -68,7 +70,7 @@ const CreateCar = ({ brightness, vehicleMake, setVehicleMake, setVehicleModel })
 		} else {
 			console.log("It exists");
 			try {
-				await axios({
+				const newModel = await axios({
 					method: "post",
 					url: `https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel`,
 					headers: {
@@ -83,6 +85,7 @@ const CreateCar = ({ brightness, vehicleMake, setVehicleMake, setVehicleModel })
 						price: parseInt(newPrice)
 					}
 				})
+				setNewCarId(newModel.data)
 			} catch (err) {
 				console.error(err);
 			} finally {
@@ -101,7 +104,7 @@ const CreateCar = ({ brightness, vehicleMake, setVehicleMake, setVehicleModel })
 	return (
 		<Form 
 			heading={`a new car`} 
-			path={'/'} 
+			path={'../'} 
 			brightness={brightness} 
 			formType={'Create'}
 		>
@@ -136,7 +139,7 @@ const CreateCar = ({ brightness, vehicleMake, setVehicleMake, setVehicleModel })
 					newPrice.toString().length > 0 ? '' : 'pointer_events_none'
 				}
 			>
-				<Link to={`../${newMake.toLowerCase().trim().replace(/\s+/g, '-')}/${newName.toLowerCase().trim().replace(/\s+/g, '-')}`} onClick={creatingVehicle}>Create</Link>
+				<Link to={`/${newCarId && newCarId}`} onClick={creatingVehicle}>Create</Link>
 			</button>
 			<button id='cancle'>
 				<Link to={'/'}>Cancle</Link>

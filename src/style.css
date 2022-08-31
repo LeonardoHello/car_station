@@ -110,7 +110,7 @@ button:hover, a:not(#logo a):hover {
 
 #filter button:not(#create_btn) {
   font-weight: 300;
-  border: 1px solid rgba(0, 0, 0, 0.477);
+  border: 1px solid;
   padding: .4em 1.5em;
 }
 
@@ -237,6 +237,8 @@ button:hover, a:not(#logo a):hover {
 
 #car_info_main img {
   border-radius: .3rem;
+  max-width: 100%;
+  height: auto;
 }
 
 #car_info_main > p {

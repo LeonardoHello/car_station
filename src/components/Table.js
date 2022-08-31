@@ -165,12 +165,12 @@ const Table = ({ brightness, vehicleMake, setVehicleMake, vehicleModel }) => {
 					/>)}
 			</div>
 			{vehicles && vehicles.map((elem, index) => (
-				<div onClick={() => console.log(elem.make_id)} key={index} className={`list ${brightness ? 'sun_color_border sun_color_hover' : 'moon_color_border moon_color_hover'}`}>
+				<div key={index} className={`list ${brightness ? 'sun_color_border sun_color_hover' : 'moon_color_border moon_color_hover'}`}>
 					<p>{elem.make.replace(/-+/g, ' ')}</p>
 					<p>{elem.name.replace(/-+/g, ' ')}</p>
 					<p>{elem.year}</p>
 					<p>{`$${elem.price.toLocaleString('en-US')}`}</p>
-					<p><Link to={`${elem.make}/${elem.name}`}>details</Link></p>
+					<p><Link to={`${elem.id}`}>details</Link></p>
 				</div>
 			))}
 			<div id='paging'>

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 import Table from "./components/Table";
-import Header from "./components/Header";
+import AppLayout from "./components/AppLayout";
 import CarInfo from "./components/CarInfo";
 import EditCar from "./components/EditCar";
 import CreateCar from "./components/CreateCar";
@@ -34,7 +34,7 @@ const App = () => {
 
   return (
     <Routes>
-      <Route element={<Header brightness={brightness} setBrightness={setBrightness} />}>
+      <Route element={<AppLayout brightness={brightness} setBrightness={setBrightness} />}>
         <Route path="/" element={
             <Table 
               brightness={brightness} 
@@ -44,30 +44,8 @@ const App = () => {
             />
           }
         />
-        {vehicleModel && (
-          vehicleModel.map((elem, index) => <Route key={index} path={`/${elem.make}/${elem.name}`} element={
-            <CarInfo 
-              name={elem.name.replace(/-+/g, ' ')}
-              make={elem.make.replace(/-+/g, ' ')}
-              year={elem.year}
-              price={elem.price}
-              brightness={brightness}
-            />}
-          />)
-        )}
-        {vehicleModel && (
-          vehicleModel.map((elem, index) => <Route key={index} path={`/${elem.make}/${elem.name}/edit`} element={
-            <EditCar 
-              name={elem.name}
-              make={elem.make}
-              year={elem.year}
-              price={elem.price}
-              id={elem.id}
-              brightness={brightness}
-              setVehicleModel={setVehicleModel}
-            />}
-          />)
-        )}
+        <Route path={`/:id`} element={<CarInfo brightness={brightness} />}/>
+        <Route path={`/:id/edit`} element={<EditCar brightness={brightness} setVehicleModel={setVehicleModel} />}/>
         <Route path="/create" element={
           <CreateCar 
             brightness={brightness} 
