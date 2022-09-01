@@ -1,24 +1,30 @@
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import useAuth from '../useAuth';
 import Form from "./Form";
 import Input from './Input';
 
-const EditCar = ({ brightness, setVehicleModel }) => {
-	const accessToken = useAuth();
+const EditCar = ({ brightness }) => {
+	const navigate = useNavigate();
 	const { id } = useParams()
 	const [carInfo, setCarInfo] = useState();
-	const [newName, setNewName] = useState(carInfo && carInfo.name.replace(/-+/g, ' '));
-	const [newYear, setNewYear] = useState(carInfo && carInfo.year);
-	const [newPrice, setNewPrice] = useState(carInfo && carInfo.price);
+	const [newName, setNewName] = useState();
+	const [newYear, setNewYear] = useState();
+	const [newPrice, setNewPrice] = useState();
+	const accessToken = useAuth();
 
 	useEffect(() => {
 		axios({
 			method: "get",
 			url: `https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel/${id}`,
 		})
-		.then(res => setCarInfo(res.data))
+		.then(res => {
+			setCarInfo(res.data)
+			setNewName(res.data.name.replace(/-+/g, ' '))
+			setNewYear(res.data.year)
+			setNewPrice(res.data.price)
+		})
 		.catch(err => console.error(err));
 	}, [id])
 
@@ -36,29 +42,25 @@ const EditCar = ({ brightness, setVehicleModel }) => {
 					year: newYear,
 				}
 			})
+			navigate(`/${id}`, { replace: false })
 		} catch (err) {
 			console.error(err)
-		} finally {
-			const gettingModels = await axios({
-				method: "get",
-				url: `https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel`,
-				params: {
-					rpp: 1000,
-				}
-			})
-			setVehicleModel(gettingModels.data.item);
 		}
 	}
 
-	const deletingVehicle = () => {
-		axios({
-			method: "delete",
-			url: `https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel/${id}`,
-			headers: {
-				Authorization: `bearer ${accessToken}`,
-			}
-		}).res()
-		.catch(err => console.error(err))
+	const deletingVehicle = async () => {
+		try {
+			await axios({
+				method: "delete",
+				url: `https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel/${id}`,
+				headers: {
+					Authorization: `bearer ${accessToken}`,
+				}
+			})
+			navigate('/', { replace: false })
+		} catch (err) {
+			console.error(err)
+		}
 	}
 
 	return (
@@ -94,16 +96,15 @@ const EditCar = ({ brightness, setVehicleModel }) => {
 				<button 
 					id='save' 
 					className={
-						newName && newName.trim().replace(/\s+/g, '-').length > 0 && 
-						newYear && newYear.toString().length > 0 && 
-						newPrice && newPrice.toString().length > 0 ? '' : 'pointer_events_none'
+						newName.trim().replace(/\s+/g, '-').length > 0 && 
+						newYear.toString().length > 0 && 
+						newPrice.toString().length > 0 ? '' : 'pointer_events_none'
 					}
+					onClick={editingVehicle}
 				>
-					<Link to={`/${id}`} onClick={editingVehicle}>Save</Link>
+					Save
 				</button>
-				<button id='delete'>
-					<Link to={"/"} onClick={deletingVehicle}>Delete</Link>
-				</button>
+				<button id='delete' onClick={deletingVehicle}>Delete</button>
 				<button id='cancle'>
 					<Link to={"/"}>Cancle</Link>
 				</button>

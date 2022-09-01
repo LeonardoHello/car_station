@@ -6,7 +6,6 @@ import Filter from './Filter';
 import useAuth from '../useAuth';
 
 const Table = ({ brightness, vehicleMake, setVehicleMake, vehicleModel }) => {
-	const accessToken = useAuth()
 	const [vehicles, setVehicles] = useState();
 	const [vehicleYears, setVehicleYears] = useState([]);
 	const [search, setSearch] = useState();
@@ -18,6 +17,8 @@ const Table = ({ brightness, vehicleMake, setVehicleMake, vehicleModel }) => {
 	const [filter, setFilter] = useState();
 	const edit = ["Make", "Name", "Year", "Price"];
 	const filterEdit = [edit[0], ...edit.slice(2)];
+	const accessToken = useAuth()
+
 
  	useEffect(() => {
 		axios({

@@ -7,6 +7,8 @@
   transition: background-color .3s, color .3s, fill .3s, border-color .3s, filter .3s;
 }
 
+
+
 a {
   color: black;
   text-decoration: unset;
@@ -157,10 +159,25 @@ button:hover, a:not(#logo a):hover {
   padding-bottom: 1rem;
 }
 
+.MYP::-webkit-scrollbar {
+  height: 1rem;
+  border-radius: 1rem;
+  background-color: rgba(120, 120, 120, 0.160);
+}
+
+.MYP::-webkit-scrollbar-track {
+  background: unset; 
+}
+
+.MYP::-webkit-scrollbar-thumb {
+  border-radius: 1rem;
+  background: #888;
+}
+
 #thead {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: 1fr 1.5fr .5fr repeat(2, 1fr);
   padding: 1rem 2rem;
   border-radius: .5rem;
 }
@@ -189,13 +206,16 @@ button:hover, a:not(#logo a):hover {
 
 .list {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: 1fr 1.5fr .5fr repeat(2, 1fr);
   padding: 2rem;
   gap: 1rem;
 }
 
 .list p {
   font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  
 }
 
 .list > * {
@@ -203,7 +223,8 @@ button:hover, a:not(#logo a):hover {
 }
 
 .list p:not(.list p:first-of-type, .list p:nth-of-type(2)) {
-  text-align: right;
+  justify-content: flex-end;
+  text-align: end;
 }
 
 .arrows {
@@ -288,6 +309,7 @@ button:hover, a:not(#logo a):hover {
 #form > button {
   display: flex;
   justify-content: center;
+  color: white;
 }
 
 #form a {
@@ -305,15 +327,21 @@ button:hover, a:not(#logo a):hover {
 #save {
   margin-top: 2rem;
   background-color: #a3dafb;
+  padding: .5em 1em;
+  
 }
 
 #create {
   margin-top: 2rem;
   background-color: #a3dafb;
+  padding: .5em 1em;
+
 }
 
 #delete {
   background-color: #ff0080;
+  padding: .5em 1em;
+
 }
 
 #cancle {
@@ -337,7 +365,7 @@ input {
   font-size: 1.6rem;
   outline: unset;
   border-radius: .5rem;
-  transition: outline .2s;
+  transition: outline .3s;
   background-color: rgb(255, 255, 255);
 }
 

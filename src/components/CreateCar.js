@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuth from "../useAuth";
 import Form from "./Form"
 import Input from "./Input";
 
-const CreateCar = ({ brightness, vehicleMake, setVehicleMake, setVehicleModel }) => {
-	const accessToken = useAuth();
-	const [newCarId, setNewCarId] = useState();
+const CreateCar = ({ brightness, vehicleMake }) => {
+	const navigate = useNavigate();
 	const [newMake, setNewMake] = useState('');
 	const [newName, setNewName] = useState('');
 	const [newYear, setNewYear] = useState('');
 	const [newPrice, setNewPrice] = useState('');
+	const accessToken = useAuth();
 
 	const creatingVehicle = async () => {
 		const existingMake = vehicleMake.find(elem => elem.name === newMake.toLowerCase().trim().replace(/\s+/g, '-'));
@@ -45,24 +45,10 @@ const CreateCar = ({ brightness, vehicleMake, setVehicleMake, setVehicleModel })
 							price: parseInt(newPrice)
 						}
 					})
-					setNewCarId(newModel.data)
-				} finally {
-					const gettingMakes = await axios({
-						method: "get",
-						url: `https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleMake`,
-						params: {
-							rpp: 1000,
-						}
-					})
-					const settingModels = await axios({
-						method: "get",
-						url: `https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel`,
-						params: {
-							rpp: 1000,
-						}
-					})
-					setVehicleMake(gettingMakes.data.item); 
-					setVehicleModel(settingModels.data.item);
+					navigate(`/${newModel.data.id}`, { replace: false })
+
+				} catch(err) {
+					console.error(err);
 				}
 			} catch (err) {
 				console.error(err);
@@ -85,18 +71,9 @@ const CreateCar = ({ brightness, vehicleMake, setVehicleMake, setVehicleModel })
 						price: parseInt(newPrice)
 					}
 				})
-				setNewCarId(newModel.data)
+				navigate(`/${newModel.data.id}`, { replace: false })
 			} catch (err) {
 				console.error(err);
-			} finally {
-				const settingModels = await axios({
-					method: "get",
-					url: `https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel`,
-					params: {
-						rpp: 1000,
-					}
-				})
-				setVehicleModel(settingModels.data.item);
 			}
 		}
 	}
@@ -138,8 +115,9 @@ const CreateCar = ({ brightness, vehicleMake, setVehicleMake, setVehicleModel })
 					newYear.toString().length > 0 && 
 					newPrice.toString().length > 0 ? '' : 'pointer_events_none'
 				}
+				onClick={creatingVehicle}
 			>
-				<Link to={`/${newCarId && newCarId}`} onClick={creatingVehicle}>Create</Link>
+				Create
 			</button>
 			<button id='cancle'>
 				<Link to={'/'}>Cancle</Link>

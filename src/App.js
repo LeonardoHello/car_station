@@ -35,18 +35,17 @@ const App = () => {
   return (
     <Routes>
       <Route element={<AppLayout brightness={brightness} setBrightness={setBrightness} />}>
-        <Route path="/" element={
-            <Table 
-              brightness={brightness} 
-              vehicleModel={vehicleModel}  
-              vehicleMake={vehicleMake}
-              setVehicleMake={setVehicleMake} 
-            />
-          }
+        <Route path="" element={
+          <Table 
+            brightness={brightness} 
+            vehicleModel={vehicleModel}  
+            vehicleMake={vehicleMake}
+            setVehicleMake={setVehicleMake} 
+          />}
         />
-        <Route path={`/:id`} element={<CarInfo brightness={brightness} />}/>
-        <Route path={`/:id/edit`} element={<EditCar brightness={brightness} setVehicleModel={setVehicleModel} />}/>
-        <Route path="/create" element={
+        <Route path={`:id`} element={<CarInfo brightness={brightness} />}/>
+        <Route path={`:id/edit`} element={<EditCar brightness={brightness} />}/>
+        <Route path="create" element={
           <CreateCar 
             brightness={brightness} 
             vehicleMake={vehicleMake}
