@@ -67,7 +67,7 @@ const EditCar = ({ brightness }) => {
 		carInfo && (
 			<Form 
 			heading={`'${carInfo.make.replace(/-+/g, ' ')}, ${carInfo.name.trim().replace(/-+/g, ' ')}'`} 
-			path={`../`} 
+			path={`/${id}`} 
 			brightness={brightness} 
 			formType={'Edit'}
 			>
