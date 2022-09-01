@@ -177,7 +177,7 @@ button:hover, a:not(#logo a):hover {
 #thead {
   display: grid;
   gap: 1rem;
-  grid-template-columns: 1fr 1.5fr .5fr repeat(2, 1fr);
+  grid-template-columns: 1fr 1.5fr repeat(3, 1fr);
   padding: 1rem 2rem;
   border-radius: .5rem;
 }
@@ -206,7 +206,7 @@ button:hover, a:not(#logo a):hover {
 
 .list {
   display: grid;
-  grid-template-columns: 1fr 1.5fr .5fr repeat(2, 1fr);
+  grid-template-columns: 1fr 1.5fr repeat(3, 1fr);
   padding: 2rem;
   gap: 1rem;
 }

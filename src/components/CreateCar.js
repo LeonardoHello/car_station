@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { observer } from 'mobx-react-lite'
+import { vehicleMake, vehicleModel } from '../store';
 import axios from "axios";
 import useAuth from "../useAuth";
 import Form from "./Form"
 import Input from "./Input";
 
-const CreateCar = ({ brightness, vehicleMake }) => {
+const CreateCar = () => {
 	const navigate = useNavigate();
 	const [newMake, setNewMake] = useState('');
 	const [newName, setNewName] = useState('');
@@ -14,9 +16,8 @@ const CreateCar = ({ brightness, vehicleMake }) => {
 	const accessToken = useAuth();
 
 	const creatingVehicle = async () => {
-		const existingMake = vehicleMake.find(elem => elem.name === newMake.toLowerCase().trim().replace(/\s+/g, '-'));
+		const existingMake = vehicleMake.collection.find(elem => elem.name === newMake.toLowerCase().trim().replace(/\s+/g, '-'));
 		if (!existingMake) {
-			console.log("doesn't exist");
 			try {
 				const creatingMake = await axios({
 					method: "post",
@@ -45,8 +46,28 @@ const CreateCar = ({ brightness, vehicleMake }) => {
 							price: parseInt(newPrice)
 						}
 					})
-					navigate(`/${newModel.data.id}`, { replace: false })
+					navigate(`/${newModel.data.id}`, { replace: false });
 
+					axios({
+						method: "get",
+						url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleMake",
+						params: {
+							rpp: 1000
+						},
+					})
+					.then(res => vehicleMake.updateCollection(res.data.item))
+					.catch(err => console.error(err));
+					
+					axios({
+						method: "get",
+						url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel",
+						params: {
+							rpp: 1000
+						},
+					})
+					.then(res => vehicleModel.updateCollection(res.data.item))
+					.catch(err => console.error(err));
+					
 				} catch(err) {
 					console.error(err);
 				}
@@ -54,7 +75,6 @@ const CreateCar = ({ brightness, vehicleMake }) => {
 				console.error(err);
 			}
 		} else {
-			console.log("It exists");
 			try {
 				const newModel = await axios({
 					method: "post",
@@ -71,7 +91,18 @@ const CreateCar = ({ brightness, vehicleMake }) => {
 						price: parseInt(newPrice)
 					}
 				})
-				navigate(`/${newModel.data.id}`, { replace: false })
+				navigate(`/${newModel.data.id}`, { replace: false });
+				
+				axios({
+					method: "get",
+					url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel",
+					params: {
+						rpp: 1000
+					},
+				})
+				.then(res => vehicleModel.updateCollection(res.data.item))
+				.catch(err => console.error(err));
+				
 			} catch (err) {
 				console.error(err);
 			}
@@ -82,7 +113,6 @@ const CreateCar = ({ brightness, vehicleMake }) => {
 		<Form 
 			heading={`a new car`} 
 			path={'../'} 
-			brightness={brightness} 
 			formType={'Create'}
 		>
 			<Input
@@ -126,4 +156,4 @@ const CreateCar = ({ brightness, vehicleMake }) => {
 	)
 }
 
-export default CreateCar
+export default observer(CreateCar)

@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite'
+import { vehicleModel } from '../store';
 import axios from 'axios'
 import useAuth from '../useAuth';
 import Form from "./Form";
 import Input from './Input';
 
-const EditCar = ({ brightness }) => {
+const EditCar = () => {
 	const navigate = useNavigate();
 	const { id } = useParams()
 	const [carInfo, setCarInfo] = useState();
@@ -41,8 +43,18 @@ const EditCar = ({ brightness }) => {
 					price: newPrice,
 					year: newYear,
 				}
+			});
+			navigate(`/${id}`, { replace: false });
+
+			axios({
+				method: "get",
+				url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel",
+				params: {
+					rpp: 1000
+				}
 			})
-			navigate(`/${id}`, { replace: false })
+			.then(res => vehicleModel.updateCollection(res.data.item))
+			.catch(err => console.error(err));
 		} catch (err) {
 			console.error(err)
 		}
@@ -68,7 +80,6 @@ const EditCar = ({ brightness }) => {
 			<Form 
 			heading={`'${carInfo.make.replace(/-+/g, ' ')}, ${carInfo.name.trim().replace(/-+/g, ' ')}'`} 
 			path={`/${id}`} 
-			brightness={brightness} 
 			formType={'Edit'}
 			>
 				<Input
@@ -113,4 +124,4 @@ const EditCar = ({ brightness }) => {
 	)
 }
 
-export default EditCar
+export default observer(EditCar)

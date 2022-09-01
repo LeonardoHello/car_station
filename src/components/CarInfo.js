@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { observer } from 'mobx-react-lite'
+import brightness from '../store';
 import axios from 'axios';
 import low from '../car-images/low.jpg'
 import mediumLow from '../car-images/medium-low.jpg'
 import mediumHigh from '../car-images/medium-high.jpg'
 import high from '../car-images/high.jpg'
 
-const CarInfo = ({ brightness }) => {
+const CarInfo = () => {
 	const { id } = useParams();
 	const [carInfo, setCarInfo] = useState();
 
@@ -21,7 +23,7 @@ const CarInfo = ({ brightness }) => {
 	
 	return (
 		carInfo && (
-			<main id='car_info_main' className={!brightness ? 'all_color_white' : ''}>
+			<main id='car_info_main' className={brightness.darkMode ? 'all_color_white' : ''}>
 				<div id='edit_btns'>
 					<p><Link to={'../'}>Go back</Link></p>
 					<p><Link to={'edit'}>Edit</Link></p>
@@ -47,4 +49,4 @@ const CarInfo = ({ brightness }) => {
 	)
 }
 
-export default CarInfo
+export default observer(CarInfo)

@@ -8,7 +8,6 @@ import EditCar from "./components/EditCar";
 import CreateCar from "./components/CreateCar";
 
 const App = () => {
-  const [brightness, setBrightness] = useState(true);
   const [vehicleModel, setVehicleModel] = useState();
   const [vehicleMake, setVehicleMake] = useState();
 
@@ -34,20 +33,12 @@ const App = () => {
 
   return (
     <Routes>
-      <Route element={<AppLayout brightness={brightness} setBrightness={setBrightness} />}>
-        <Route path="" element={
-          <Table 
-            brightness={brightness} 
-            vehicleModel={vehicleModel}  
-            vehicleMake={vehicleMake}
-            setVehicleMake={setVehicleMake} 
-          />}
-        />
-        <Route path={`:id`} element={<CarInfo brightness={brightness} />}/>
-        <Route path={`:id/edit`} element={<EditCar brightness={brightness} />}/>
+      <Route element={<AppLayout />}>
+        <Route path="" element={<Table />}/>
+        <Route path={`:id`} element={<CarInfo />}/>
+        <Route path={`:id/edit`} element={<EditCar />}/>
         <Route path="create" element={
           <CreateCar 
-            brightness={brightness} 
             vehicleMake={vehicleMake}
             setVehicleMake={setVehicleMake}
             setVehicleModel={setVehicleModel}

@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
+import { observer } from 'mobx-react-lite'
+import brightness from '../store';
 
-const TableHead = ({ name, brightness, sort, setSort, order, setOrder }) => {
+const TableHead = ({ name, sort, setSort, order, setOrder }) => {
 	useEffect(() => {
 		if (document.querySelector(`.${sort} #${order} path`) !== null) {
-			if (brightness) {
+			if (!brightness.darkMode) {
 				[...document.querySelectorAll('#thead path')].map(elem => elem.classList.remove('fill_white'));
 				document.querySelector(`.${sort} #${order} path`).classList.add('fill_white');
 			} else {
@@ -11,17 +13,17 @@ const TableHead = ({ name, brightness, sort, setSort, order, setOrder }) => {
 				document.querySelector(`.${sort} #${order} path`).classList.remove('fill_white');
 			}
 		} else {
-			if (brightness) {
+			if (!brightness.darkMode) {
 				[...document.querySelectorAll('#thead path')].map(elem => elem.classList.remove('fill_white'));
 			} else {
 				[...document.querySelectorAll('#thead path')].map(elem => elem.classList.add('fill_white'));
 			}
 		}
-	}, [brightness]);
+	}, [!brightness.darkMode]);
 
 	useEffect(() => {
 		if (document.querySelector(`.${sort} #${order} path`) !== null) {
-			if (brightness) {
+			if (!brightness.darkMode) {
 				[...document.querySelectorAll('#thead path')].map(elem => elem.classList.remove('fill_white'));
 				document.querySelector(`.${sort} #${order} path`).classList.add('fill_white');
 			} else {
@@ -40,7 +42,7 @@ const TableHead = ({ name, brightness, sort, setSort, order, setOrder }) => {
 		} else {
 			setSort();
 			setOrder();
-			if (brightness) {
+			if (!brightness.darkMode) {
 				[...document.querySelectorAll('#thead path')].map(elem => elem.classList.remove('fill_white'));
 			} else {
 				[...document.querySelectorAll('#thead path')].map(elem => elem.classList.add('fill_white'));
@@ -64,4 +66,4 @@ const TableHead = ({ name, brightness, sort, setSort, order, setOrder }) => {
 	)
 }
 
-export default TableHead
+export default observer(TableHead)
