@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import axios from "axios";
 import TableHead from './TableHead';
 import Filter from './Filter';
-import useAuth from '../useAuth';
 
 const Table = ({ brightness, vehicleMake, setVehicleMake, vehicleModel }) => {
 	const [vehicles, setVehicles] = useState();
@@ -17,8 +16,6 @@ const Table = ({ brightness, vehicleMake, setVehicleMake, vehicleModel }) => {
 	const [filter, setFilter] = useState();
 	const edit = ["Make", "Name", "Year", "Price"];
 	const filterEdit = [edit[0], ...edit.slice(2)];
-	const accessToken = useAuth()
-
 
  	useEffect(() => {
 		axios({
@@ -49,34 +46,6 @@ const Table = ({ brightness, vehicleMake, setVehicleMake, vehicleModel }) => {
 		setPage(1);
 	}, [search]);
 
-	const deleting = async (schema, field, operator, name) => {
-		try {
-			const gettingData = await axios({
-				method: "get",
-				url: `https://api.baasic.com/beta/simple-vehicle-app/resources/${schema}`,
-				params: {
-					rpp: 200,
-					searchQuery: `where ${field} ${operator} ${name}`
-				}
-			})
-			try {
-				await gettingData.data.item.map(async elem => {
-					await axios({
-						method: "delete",
-						url: `https://api.baasic.com/beta/simple-vehicle-app/resources/${schema}/${elem.id}`,
-						headers: {
-							Authorization: `bearer ${accessToken}`,
-						}
-					})
-				})
-			} finally {
-				console.log('doggo');
-			}
-		} catch (err) {
-			console.error(err);
-		}
-	}
-
 	const gettingManufacturers = () => {
 		axios({
 			method: "get",
@@ -98,34 +67,6 @@ const Table = ({ brightness, vehicleMake, setVehicleMake, vehicleModel }) => {
 		setSearch();
 		// deleting('VehicleMake', 'name', '=', "'aka'");
 	}
-/*
-	const send = () => {
-		if (!vehicleModel) return
-		vehicleModel.map(elemA => {
-			vehicleMake.map(elemB => {
-				if (elemA.make === elemB.name) {
-					axios({
-						method: "post",
-						url: `https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel`,
-						headers: {
-							Authorization: `bearer ${accessToken}`,
-						},
-						data: {
-							description: 'Model',
-							name: elemA.model,
-							make: elemA.make,
-							make_id: elemB.id,
-							price: elemA.price,
-							year: elemA.year,
-							image: elemA.img_url
-						}
-					}).then(res => console.log(res.data))
-					.catch(err => console.error(err))
-				}
-			})
-		})
-	}
-	*/
 	return (
 		<main className={!brightness ? 'all_color_white' : ''}>
 			<div id='filter'>
