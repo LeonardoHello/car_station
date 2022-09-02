@@ -7,26 +7,35 @@ import TableHead from './TableHead';
 import Filter from './Filter';
 
 const Table = () => {
-	// const [input, setInput] = useState('');
 	const [vehicles, setVehicles] = useState();
-	const [search, setSearch] = useState();
+	const [input, setInput] = useState('');
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState();
 	const [sort, setSort] = useState();
 	const [order, setOrder] = useState();
-	const [displayFilter, setDisplayFilter] = useState(false);
+	const [displayFilterBtns, setDisplayFilterBtns] = useState(false);
 	const [filterBy, setFilterBy] = useState();
+	const [filterQuery, setFilterQuery] = useState();
+	const [searchQuery, setSearchQuery] = useState();
 	const edit = ["Make", "Name", "Year", "Price"];
 	const filterEdit = [edit[0], ...edit.slice(2)];
 
-	/*
 	useEffect(() => {
-		const door = vehicleModel.collection.filter(elem => elem.name.replace(/-+/g, ' ').includes(input) || elem.make.replace(/-+/g, ' ').includes(input) || elem.year.toString().includes(input) || elem.price.toString().includes(input));
-		console.log(door);
-	}, [input]);
-	*/
-	 
+		if (!input.length < 1) {
+			setSearchQuery(`${!filterQuery ? 'where ' : ''}name like '%${input}%' or make like '%${input}%' or year like '%${input}%' or price like '%${input}%'`);
+		} else {
+			setSearchQuery()
+		}
+	}, [input, searchQuery, filterQuery]);
+
  	useEffect(() => {
+		if (filterQuery && !searchQuery) {
+			console.log(filterQuery);
+		} else if (!filterQuery && searchQuery) {
+			console.log(searchQuery);
+		} else if (filterQuery && searchQuery) {
+			console.log(`${filterQuery} and ${searchQuery}`);
+		}
 		axios({
 			method: "get",
 			url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel",
@@ -34,25 +43,31 @@ const Table = () => {
 				rpp: 10,
 				page: page,
 				sort: sort && `${sort}|${order}`,
-				searchQuery: search
-			},
+				searchQuery: 
+					filterQuery && !searchQuery ? 
+					filterQuery : 
+					!filterQuery && searchQuery ? 
+					searchQuery :
+					filterQuery && searchQuery ?
+					`${filterQuery} and (${searchQuery})` :
+					null
+			}
 		})
 		.then(res => {
-
 			setVehicles(res.data.item); 
 			setTotalPages(Math.ceil(res.data.totalRecords/res.data.recordsPerPage))
 		})
 		.catch(err => console.error(err));
-	}, [page, totalPages, sort, order, search]);
+	}, [page, totalPages, sort, order, filterQuery, searchQuery]);
 
 	useEffect(() => {
 		setPage(1);
-	}, [search]);
+	}, [filterQuery]);
 
 	const closeFilter = () => {
-		setDisplayFilter(prev => !prev);
+		setDisplayFilterBtns(prev => !prev);
 		setFilterBy();
-		setSearch();
+		setFilterQuery();
 	}
 	return (
 		<main className={brightness.darkMode ? 'all_color_white' : ''}>
@@ -61,16 +76,16 @@ const Table = () => {
 					<button onClick={closeFilter}>Filter</button>
 					<button id='create_btn'><Link to={'create'}>Create new car</Link></button>
 				</div>
-				{displayFilter && (
+				{displayFilterBtns && (
 					<div>
 						{filterEdit.map((elem, index) => 
 							<button key={index} onClick={() => setFilterBy(elem)}>{elem}</button>
 						)}
 					</div>
 				)}
-				<Filter filterName={filterBy} setSearch={setSearch} />
+				<Filter filterName={filterBy} setFilterQuery={setFilterQuery} />
 			</div>
-			{/* <input id='search_input' className={!brightness.darkMode ? 'sun_color_full_border' : 'moon_color_full_border'} type="text" placeholder='Search' value={input} onInput={(e) => setInput(e.currentTarget.value)} /> */}
+			<input id='search_input' className={!brightness.darkMode ? 'sun_color_full_border' : 'moon_color_full_border'} type="text" placeholder='Search' value={input} onInput={(e) => setInput(e.currentTarget.value)} />
 			<div id='thead' className={!brightness.darkMode ? 'sun_color_bg' : 'moon_color_bg'}>
 				{edit.map((elem, index) => 
 					<TableHead 
@@ -93,7 +108,9 @@ const Table = () => {
 			))}
 			<div id='paging'>
 				<button className={page <= 1 ? 'color_gray' : brightness.darkMode ? 'color_white' : ''} onClick={() => page > 1 ? setPage(prev => prev-1) : null}>PREVIOUS</button>
-				<p>{`${page}/${totalPages}`}</p>
+
+				<p>{`${totalPages > 0 ? page : 0}/${totalPages}`}</p>
+				
 				<button className={page >= totalPages  ? 'color_gray' : brightness.darkMode ? 'color_white' : ''} onClick={() => page < totalPages ? setPage(prev => prev+1) : null}>NEXT</button>
 			</div>
 		</main>
