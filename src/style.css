@@ -7,8 +7,6 @@
   transition: background-color .3s, color .3s, fill .3s, border-color .3s, filter .3s;
 }
 
-
-
 a {
   color: black;
   text-decoration: unset;
@@ -104,10 +102,10 @@ button:hover, a:not(#logo a):hover {
 #filter {
   display: flex;
   flex-direction: column;
-  padding-bottom: 2rem;
   justify-content: unset;
   overflow: hidden;
   gap: 1rem;
+  padding-bottom: 2rem;
 }
 
 #filter button:not(#create_btn) {
@@ -172,6 +170,13 @@ button:hover, a:not(#logo a):hover {
 .MYP::-webkit-scrollbar-thumb {
   border-radius: 1rem;
   background: #888;
+}
+
+#search_input {
+  margin: 2rem 0;
+  min-width: 30rem;
+  border-width: 2px;
+  border-style: solid;
 }
 
 #thead {
@@ -465,6 +470,15 @@ input::placeholder {
   outline: 2px solid red;
 }
 
+.sun_color_full_border {
+  border-color: #ff008030;
+}
+
+.moon_color_full_border {
+  border-color: #8983f7;
+  background-color: aliceblue;
+}
+
 .user_select_none {
   user-select: none;
 }
@@ -482,6 +496,13 @@ input::placeholder {
     justify-content: unset;
   }
 }
+
+@media only screen and (max-width: 600px) {
+  #search_input {
+    min-width: 100%;
+  }
+}
+
 
 @media only screen and (min-width: 1000px) {
   #root {

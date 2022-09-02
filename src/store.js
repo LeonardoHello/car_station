@@ -47,7 +47,7 @@ axios({
 	url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleMake",
 	params: {
 		rpp: 1000
-	},
+	}
 })
 .then(res => vehicleMake.updateCollection(res.data.item))
 .catch(err => console.error(err));
@@ -57,7 +57,7 @@ axios({
 	url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel",
 	params: {
 		rpp: 1000
-	},
+	}
 })
 .then(res => vehicleModel.updateCollection(res.data.item))
 .catch(err => console.error(err));

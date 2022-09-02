@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite'
-import brightness from '../store';
 import axios from "axios";
+import brightness from '../store';
 import TableHead from './TableHead';
 import Filter from './Filter';
 
 const Table = () => {
+	// const [input, setInput] = useState('');
 	const [vehicles, setVehicles] = useState();
 	const [search, setSearch] = useState();
 	const [page, setPage] = useState(1);
@@ -18,6 +19,13 @@ const Table = () => {
 	const edit = ["Make", "Name", "Year", "Price"];
 	const filterEdit = [edit[0], ...edit.slice(2)];
 
+	/*
+	useEffect(() => {
+		const door = vehicleModel.collection.filter(elem => elem.name.replace(/-+/g, ' ').includes(input) || elem.make.replace(/-+/g, ' ').includes(input) || elem.year.toString().includes(input) || elem.price.toString().includes(input));
+		console.log(door);
+	}, [input]);
+	*/
+	 
  	useEffect(() => {
 		axios({
 			method: "get",
@@ -30,6 +38,7 @@ const Table = () => {
 			},
 		})
 		.then(res => {
+
 			setVehicles(res.data.item); 
 			setTotalPages(Math.ceil(res.data.totalRecords/res.data.recordsPerPage))
 		})
@@ -45,7 +54,6 @@ const Table = () => {
 		setFilterBy();
 		setSearch();
 	}
-
 	return (
 		<main className={brightness.darkMode ? 'all_color_white' : ''}>
 			<div id='filter'>
@@ -62,6 +70,7 @@ const Table = () => {
 				)}
 				<Filter filterName={filterBy} setSearch={setSearch} />
 			</div>
+			{/* <input id='search_input' className={!brightness.darkMode ? 'sun_color_full_border' : 'moon_color_full_border'} type="text" placeholder='Search' value={input} onInput={(e) => setInput(e.currentTarget.value)} /> */}
 			<div id='thead' className={!brightness.darkMode ? 'sun_color_bg' : 'moon_color_bg'}>
 				{edit.map((elem, index) => 
 					<TableHead 

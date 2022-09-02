@@ -44,6 +44,7 @@ const EditCar = () => {
 					year: newYear,
 				}
 			});
+			
 			navigate(`/${id}`, { replace: false });
 
 			axios({

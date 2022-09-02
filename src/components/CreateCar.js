@@ -46,6 +46,7 @@ const CreateCar = () => {
 							price: parseInt(newPrice)
 						}
 					})
+					
 					navigate(`/${newModel.data.id}`, { replace: false });
 
 					axios({
@@ -91,6 +92,7 @@ const CreateCar = () => {
 						price: parseInt(newPrice)
 					}
 				})
+
 				navigate(`/${newModel.data.id}`, { replace: false });
 				
 				axios({
