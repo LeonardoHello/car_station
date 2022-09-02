@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { observer } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite';
 import axios from "axios";
 import brightness from '../store';
 import TableHead from './TableHead';

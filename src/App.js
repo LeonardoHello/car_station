@@ -10,8 +10,8 @@ const App = () => {
     <Routes>
       <Route element={<AppLayout />}>
         <Route path="" element={<Table />}/>
-        <Route path={`:id`} element={<CarInfo />}/>
-        <Route path={`:id/edit`} element={<EditCar />}/>
+        <Route path=":id" element={<CarInfo />}/>
+        <Route path=":id/edit" element={<EditCar />}/>
         <Route path="create" element={<CreateCar />}/>
       </Route>
     </Routes>

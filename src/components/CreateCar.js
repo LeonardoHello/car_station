@@ -48,26 +48,8 @@ const CreateCar = () => {
 					})
 					
 					navigate(`/${newModel.data.id}`, { replace: false });
-
-					axios({
-						method: "get",
-						url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleMake",
-						params: {
-							rpp: 1000
-						},
-					})
-					.then(res => vehicleMake.updateCollection(res.data.item))
-					.catch(err => console.error(err));
-					
-					axios({
-						method: "get",
-						url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel",
-						params: {
-							rpp: 1000
-						},
-					})
-					.then(res => vehicleModel.updateCollection(res.data.item))
-					.catch(err => console.error(err));
+					vehicleMake.updateCollection();
+					vehicleModel.updateCollection();
 					
 				} catch(err) {
 					console.error(err);
@@ -94,17 +76,8 @@ const CreateCar = () => {
 				})
 
 				navigate(`/${newModel.data.id}`, { replace: false });
-				
-				axios({
-					method: "get",
-					url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel",
-					params: {
-						rpp: 1000
-					},
-				})
-				.then(res => vehicleModel.updateCollection(res.data.item))
-				.catch(err => console.error(err));
-				
+				vehicleModel.updateCollection();
+
 			} catch (err) {
 				console.error(err);
 			}

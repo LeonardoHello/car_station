@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import axios from "axios";
 
 class togglingDarkMode {
@@ -22,8 +22,16 @@ class vehicleManufacturerCollection {
 		makeAutoObservable(this)
 	}
 
-	updateCollection(manufacturers) {
-		this.collection = manufacturers
+	async updateCollection() {
+		const updating = await axios({
+			method: "get",
+			url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleMake",
+			params: {
+				rpp: 1000
+			}
+		})
+
+		runInAction(() => this.collection = updating.data.item)
 	}
 }
 const vehicleMake = new vehicleManufacturerCollection();
@@ -36,32 +44,21 @@ class vehicleModelCollection {
 		makeAutoObservable(this)
 	}
 
-	updateCollection(models) {
-		this.collection = models
+	async updateCollection() {
+		const updating = await axios({
+			method: "get",
+			url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel",
+			params: {
+				rpp: 1000
+			}
+		})
+		runInAction(() => this.collection = updating.data.item)
 	}
 }
 const vehicleModel = new vehicleModelCollection();
 
-axios({
-	method: "get",
-	url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleMake",
-	params: {
-		rpp: 1000
-	}
-})
-.then(res => vehicleMake.updateCollection(res.data.item))
-.catch(err => console.error(err));
-
-axios({
-	method: "get",
-	url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel",
-	params: {
-		rpp: 1000
-	}
-})
-.then(res => vehicleModel.updateCollection(res.data.item))
-.catch(err => console.error(err));
-
+vehicleMake.updateCollection();
+vehicleModel.updateCollection();
 
 export default brightness;
 export { vehicleMake, vehicleModel };
