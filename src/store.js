@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import axios from "axios";
 
-class togglingDarkMode {
+class toggleDarkMode {
 	darkMode = false;
 
 	constructor() {
@@ -12,7 +12,7 @@ class togglingDarkMode {
 		this.darkMode = !this.darkMode
 	}
 }
-const brightness = new togglingDarkMode();
+const brightness = new toggleDarkMode();
 
 
 class vehicleManufacturerCollection {
@@ -36,7 +36,6 @@ class vehicleManufacturerCollection {
 }
 const vehicleMake = new vehicleManufacturerCollection();
 
-
 class vehicleModelCollection {
 	collection = [];
 
@@ -57,8 +56,64 @@ class vehicleModelCollection {
 }
 const vehicleModel = new vehicleModelCollection();
 
+class toggleOrder {
+	direction = null;
+
+	constructor() {
+		makeAutoObservable(this)
+	}
+
+	ascending() {
+		this.direction = "asc"
+	}
+
+	descending() {
+		this.direction = "desc"
+	}
+
+	none() {
+		this.direction = null
+	}
+
+}
+const order = new toggleOrder();
+
+class sorting {
+	value = null;
+
+	constructor() {
+		makeAutoObservable(this)
+	}
+
+	settingValue(value) {
+		this.value = value.toLowerCase()
+	}
+
+	removingValue() {
+		this.value = null
+	}
+}
+const sort = new sorting();
+
+class settingCurrentFilter {
+	value = null;
+
+	constructor() {
+		makeAutoObservable(this)
+	}
+
+	settingValue(value) {
+		this.value = value
+	}
+
+	removingValue() {
+		this.value = null;
+	}
+}
+const currentFilter = new settingCurrentFilter();
+
 vehicleMake.updateCollection();
 vehicleModel.updateCollection();
 
 export default brightness;
-export { vehicleMake, vehicleModel };
+export { vehicleMake, vehicleModel, order, sort, currentFilter };

@@ -1,16 +1,16 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite'
-import brightness from '../store';
+import brightness, { sort, order } from '../store';
 
-const TableHead = ({ name, sort, setSort, order, setOrder }) => {
+const TableHead = ({ name }) => {
 	useEffect(() => {
-		if (document.querySelector(`.${sort} #${order} path`) !== null) {
+		if (document.querySelector(`.${sort.value} #${order.direction} path`) !== null) {
 			if (!brightness.darkMode) {
 				[...document.querySelectorAll('#thead path')].map(elem => elem.classList.remove('fill_white'));
-				document.querySelector(`.${sort} #${order} path`).classList.add('fill_white');
+				document.querySelector(`.${sort.value} #${order.direction} path`).classList.add('fill_white');
 			} else {
 				[...document.querySelectorAll('#thead path')].map(elem => elem.classList.add('fill_white'));
-				document.querySelector(`.${sort} #${order} path`).classList.remove('fill_white');
+				document.querySelector(`.${sort.value} #${order.direction} path`).classList.remove('fill_white');
 			}
 		} else {
 			if (!brightness.darkMode) {
@@ -22,26 +22,26 @@ const TableHead = ({ name, sort, setSort, order, setOrder }) => {
 	}, [!brightness.darkMode]);
 
 	useEffect(() => {
-		if (document.querySelector(`.${sort} #${order} path`) !== null) {
+		if (document.querySelector(`.${sort.value} #${order.direction} path`) !== null) {
 			if (!brightness.darkMode) {
 				[...document.querySelectorAll('#thead path')].map(elem => elem.classList.remove('fill_white'));
-				document.querySelector(`.${sort} #${order} path`).classList.add('fill_white');
+				document.querySelector(`.${sort.value} #${order.direction} path`).classList.add('fill_white');
 			} else {
 				[...document.querySelectorAll('#thead path')].map(elem => elem.classList.add('fill_white'));
-				document.querySelector(`.${sort} #${order} path`).classList.remove('fill_white');
+				document.querySelector(`.${sort.value} #${order.direction} path`).classList.remove('fill_white');
 			}
 		}
-	}, [sort, order])
+	}, [sort.value, order.direction])
 
 	const settingOrder = () => {
-		if (sort !== name.toLowerCase()) {
-			setSort(name.toLowerCase());
-			setOrder('asc');
-		} else if (sort === name.toLowerCase() && order === 'asc') {
-			setOrder('desc');
+		if (sort.value !== name.toLowerCase()) {
+			sort.settingValue(name);
+			order.ascending();
+		} else if (sort.value === name.toLowerCase() && order.direction === 'asc') {
+			order.descending();
 		} else {
-			setSort();
-			setOrder();
+			sort.removingValue();
+			order.none();
 			if (!brightness.darkMode) {
 				[...document.querySelectorAll('#thead path')].map(elem => elem.classList.remove('fill_white'));
 			} else {

@@ -101,7 +101,7 @@ button:hover, a:not(#logo a):hover {
   filter: opacity(.6);
 }
 
-#filter {
+:where(#filter) {
   display: flex;
   flex-direction: column;
   justify-content: unset;
@@ -133,7 +133,7 @@ button:hover, a:not(#logo a):hover {
   gap: 1rem;
 }
 
-#filter > div:nth-of-type(2) {
+:where(#filter > div:nth-of-type(2)) {
   display: flex;
   gap: 1rem;
 }
@@ -151,7 +151,7 @@ button:hover, a:not(#logo a):hover {
   white-space: unset;
 }
 
-#filter_type {
+:where(#filter_type) {
   overflow-x: scroll;
   display: flex;
   gap: 1rem;
@@ -159,9 +159,9 @@ button:hover, a:not(#logo a):hover {
 }
 
 #filter_type::-webkit-scrollbar {
-  height: 1rem;
+  height: .75rem;
   border-radius: 1rem;
-  background-color: rgba(120, 120, 120, 0.160);
+  background-color: rgba(174, 174, 174, 0.16);
 }
 
 #filter_type::-webkit-scrollbar-track {
@@ -170,7 +170,7 @@ button:hover, a:not(#logo a):hover {
 
 #filter_type::-webkit-scrollbar-thumb {
   border-radius: 1rem;
-  background: rgb(140, 140, 140);
+  background: rgba(152, 152, 152, 0.697);
 }
 
 #search_input {
@@ -490,6 +490,10 @@ input::placeholder {
 
 .pointer_events_none #manufacturer {
   color: rgba(128, 128, 128, 0.566);
+}
+
+.display_none {
+  display: none;
 }
 
 @media only screen and (min-width: 336px) {
