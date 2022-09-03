@@ -48,7 +48,7 @@ const Filter = ({ filterCategory, setFilterQuery }) => {
 					onClick={() => 
 						currentFilter.value !== elem.name ? 
 						settingCurrentFilter(elem.name) : 
-						currentFilter.removingValue()
+						removingCurrentFilter()
 					} 
 				>
 					{elem.name}
@@ -59,7 +59,7 @@ const Filter = ({ filterCategory, setFilterQuery }) => {
 					key={index} 
 					style={styling(elem)} 
 					onClick={() => 
-						currentFilter !== elem ? 
+						currentFilter.value !== elem ? 
 						settingCurrentFilter(elem) : 
 						removingCurrentFilter()
 					}
@@ -72,7 +72,7 @@ const Filter = ({ filterCategory, setFilterQuery }) => {
 					key={index} 
 					style={styling(elem)} 
 					onClick={() => 
-						currentFilter !== elem ? 
+						currentFilter.value !== elem ? 
 						settingCurrentFilter(elem) : 
 						removingCurrentFilter()
 					}
