@@ -8,12 +8,12 @@ import Form from "./Form";
 import Input from './Input';
 
 const EditCar = () => {
-	const navigate = useNavigate();
-	const { id } = useParams()
 	const [carInfo, setCarInfo] = useState();
 	const [newName, setNewName] = useState();
 	const [newYear, setNewYear] = useState();
 	const [newPrice, setNewPrice] = useState();
+	const { id } = useParams();
+	const navigate = useNavigate();
 	const accessToken = useAuth();
 
 	useEffect(() => {
@@ -28,7 +28,7 @@ const EditCar = () => {
 			setNewPrice(res.data.price)
 		})
 		.catch(err => console.error(err));
-	}, [id])
+	}, [])
 
 	const editingVehicle = async () => {
 		try {
@@ -40,8 +40,8 @@ const EditCar = () => {
 				},
 				data: {
 					name: newName.toLowerCase().trim().replace(/\s+/g, '-'),
-					price: newPrice,
-					year: newYear,
+					price: parseInt(newPrice),
+					year: parseInt(newYear),
 				}
 			});
 			

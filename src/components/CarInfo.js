@@ -9,8 +9,8 @@ import mediumHigh from '../car-images/medium-high.jpg'
 import high from '../car-images/high.jpg'
 
 const CarInfo = () => {
-	const { id } = useParams();
 	const [carInfo, setCarInfo] = useState();
+	const { id } = useParams();
 
 	useEffect(() => {
 		axios({

@@ -50,8 +50,6 @@ header {
   font-weight: 500;
   letter-spacing: -1px;
   word-break: break-word;
-  color: transparent;
-  background-clip: text;
   flex-grow: 2;
 }
 
@@ -60,6 +58,7 @@ header {
   color: transparent;
   font-weight: 500;
   text-align: center;
+  background-clip: text;
 }
 
 #brightness {
@@ -88,11 +87,14 @@ header {
 
 button {
   background-color: unset;
-  border: unset;
   border-radius: .3rem;
   font-size: 1.8rem;
   user-select: none;
   cursor: pointer;
+}
+
+button:not(#filter button) {
+  border: unset;
 }
 
 button:hover, a:not(#logo a):hover {
@@ -107,9 +109,9 @@ button:hover, a:not(#logo a):hover {
   gap: 1rem;
 }
 
-#filter button:not(#create_btn) {
+:where(#filter button:not(#create_btn)) {
   font-weight: 300;
-  border: 1px solid;
+  border: 1px solid black;
   padding: .4em 1.5em;
 }
 
@@ -149,26 +151,26 @@ button:hover, a:not(#logo a):hover {
   white-space: unset;
 }
 
-.MYP {
+#filter_type {
   overflow-x: scroll;
   display: flex;
   gap: 1rem;
   padding-bottom: 1rem;
 }
 
-.MYP::-webkit-scrollbar {
+#filter_type::-webkit-scrollbar {
   height: 1rem;
   border-radius: 1rem;
   background-color: rgba(120, 120, 120, 0.160);
 }
 
-.MYP::-webkit-scrollbar-track {
+#filter_type::-webkit-scrollbar-track {
   background: unset; 
 }
 
-.MYP::-webkit-scrollbar-thumb {
+#filter_type::-webkit-scrollbar-thumb {
   border-radius: 1rem;
-  background: #888;
+  background: rgb(140, 140, 140);
 }
 
 #search_input {

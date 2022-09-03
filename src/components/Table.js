@@ -8,35 +8,22 @@ import Filter from './Filter';
 
 const Table = () => {
 	const [vehicles, setVehicles] = useState();
-	const [input, setInput] = useState('');
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState();
 	const [sort, setSort] = useState();
 	const [order, setOrder] = useState();
 	const [displayFilterBtns, setDisplayFilterBtns] = useState(false);
 	const [filterBy, setFilterBy] = useState();
-	const [filterQuery, setFilterQuery] = useState();
-	const [searchQuery, setSearchQuery] = useState();
+	const [currentFilter, setCurrentFilter] = useState();
+	const [filterQuery, setFilterQuery] = useState('');
+	const [searchQuery, setSearchQuery] = useState('');
 	const edit = ["Make", "Name", "Year", "Price"];
 	const filterEdit = [edit[0], ...edit.slice(2)];
 
-	useEffect(() => {
-		if (!input.length < 1) {
-			setSearchQuery(`${!filterQuery ? 'where ' : ''}name like '%${input}%' or make like '%${input}%' or year like '%${input}%' or price like '%${input}%'`);
-		} else {
-			setSearchQuery()
-		}
-	}, [input, searchQuery, filterQuery]);
-
  	useEffect(() => {
-		if (filterQuery && !searchQuery) {
-			console.log(filterQuery);
-		} else if (!filterQuery && searchQuery) {
-			console.log(searchQuery);
-		} else if (filterQuery && searchQuery) {
-			console.log(`${filterQuery} and ${searchQuery}`);
-		}
+		const cancelRequest = axios.CancelToken.source();
 		axios({
+			cancelToken: cancelRequest.token,
 			method: "get",
 			url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel",
 			params: {
@@ -49,7 +36,7 @@ const Table = () => {
 					!filterQuery && searchQuery ? 
 					searchQuery :
 					filterQuery && searchQuery ?
-					`${filterQuery} and (${searchQuery})` :
+					`${filterQuery} and (${searchQuery.split(' ').slice(1).join(' ')})` :
 					null
 			}
 		})
@@ -58,7 +45,9 @@ const Table = () => {
 			setTotalPages(Math.ceil(res.data.totalRecords/res.data.recordsPerPage))
 		})
 		.catch(err => console.error(err));
-	}, [page, totalPages, sort, order, filterQuery, searchQuery]);
+
+		return () => cancelRequest.cancel();
+	}, [page, sort, order, filterQuery, searchQuery]);
 
 	useEffect(() => {
 		setPage(1);
@@ -67,25 +56,58 @@ const Table = () => {
 	const closeFilter = () => {
 		setDisplayFilterBtns(prev => !prev);
 		setFilterBy();
+		setFilterBy()
 		setFilterQuery();
+		setCurrentFilter();
+	}
+
+	const updatingQuery = (e) => {
+		if (e.currentTarget.value.trim().replace(/\s+/g, '-').length < 1) return setSearchQuery();
+
+		setSearchQuery(`where name like '%${e.currentTarget.value.trim().replace(/\s+/g, '-')}%' or make like '%${e.currentTarget.value.trim().replace(/\s+/g, '-')}%' or year like '%${e.currentTarget.value.trim().replace(/\s+/g, '-')}%' or price like '%${e.currentTarget.value.trim().replace(/\s+/g, '-')}%'`);
+	}
+
+	const styling = (name) => {
+		return	{
+			border: `${name && !brightness.darkMode ? '3px solid #ff008030' : name && brightness.darkMode ? '3px solid #8983f7' : ''}`,
+			color: `${name && !brightness.darkMode ? '#ff008030' : name && brightness.darkMode ? '#8983f7' : ''}`,
+			fontWeight: `${name ? '600' : ''}`,
+			transition: `${name ? 'unset' : ''}`
+		}
 	}
 	return (
 		<main className={brightness.darkMode ? 'all_color_white' : ''}>
 			<div id='filter'>
 				<div>
-					<button onClick={closeFilter}>Filter</button>
+					<button 
+						onClick={closeFilter}
+						style={styling(displayFilterBtns)} 
+					>
+						Filter
+					</button>
 					<button id='create_btn'><Link to={'create'}>Create new car</Link></button>
 				</div>
 				{displayFilterBtns && (
 					<div>
 						{filterEdit.map((elem, index) => 
-							<button key={index} onClick={() => setFilterBy(elem)}>{elem}</button>
+							<button 
+								key={index} 
+								onClick={() => setFilterBy(elem)}
+								style={styling(elem === filterBy)} 
+							>
+								{elem}
+							</button>
 						)}
 					</div>
 				)}
-				<Filter filterName={filterBy} setFilterQuery={setFilterQuery} />
+				<Filter 
+					filterName={filterBy} 
+					setFilterQuery={setFilterQuery} 
+					currentFilter={currentFilter} 
+					setCurrentFilter={setCurrentFilter} 
+				/>
 			</div>
-			<input id='search_input' className={!brightness.darkMode ? 'sun_color_full_border' : 'moon_color_full_border'} type="text" placeholder='Search' value={input} onInput={(e) => setInput(e.currentTarget.value)} />
+			<input id='search_input' className={!brightness.darkMode ? 'sun_color_full_border' : 'moon_color_full_border'} type="text" placeholder='Search' onInput={updatingQuery} />
 			<div id='thead' className={!brightness.darkMode ? 'sun_color_bg' : 'moon_color_bg'}>
 				{edit.map((elem, index) => 
 					<TableHead 
@@ -97,8 +119,8 @@ const Table = () => {
 						setSort={setSort}
 					/>)}
 			</div>
-			{vehicles && vehicles.map((elem, index) => (
-				<div key={index} className={`list ${!brightness.darkMode ? 'sun_color_border sun_color_hover' : 'moon_color_border moon_color_hover'}`}>
+			{vehicles && vehicles.map(elem => (
+				<div key={elem.id} className={`list ${!brightness.darkMode ? 'sun_color_border sun_color_hover' : 'moon_color_border moon_color_hover'}`}>
 					<p>{elem.make.replace(/-+/g, ' ')}</p>
 					<p>{elem.name.replace(/-+/g, ' ')}</p>
 					<p>{elem.year}</p>

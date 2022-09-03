@@ -8,12 +8,12 @@ import Form from "./Form"
 import Input from "./Input";
 
 const CreateCar = () => {
-	const navigate = useNavigate();
 	const [newMake, setNewMake] = useState('');
 	const [newName, setNewName] = useState('');
 	const [newYear, setNewYear] = useState('');
 	const [newPrice, setNewPrice] = useState('');
 	const accessToken = useAuth();
+	const navigate = useNavigate();
 
 	const creatingVehicle = async () => {
 		const existingMake = vehicleMake.collection.find(elem => elem.name === newMake.toLowerCase().trim().replace(/\s+/g, '-'));
