@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite'
-import { vehicleModel } from '../store';
+import { vehicleMake, vehicleModel } from '../store';
 import axios from 'axios'
 import useAuth from '../useAuth';
 import Form from "./Form";
@@ -12,6 +12,7 @@ const EditCar = () => {
 	const [newName, setNewName] = useState();
 	const [newYear, setNewYear] = useState();
 	const [newPrice, setNewPrice] = useState();
+	const [makeId, setMakeId] = useState();
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const accessToken = useAuth();
@@ -22,13 +23,14 @@ const EditCar = () => {
 			url: `https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel/${id}`,
 		})
 		.then(res => {
-			setCarInfo(res.data)
-			setNewName(res.data.name.replace(/-+/g, ' '))
-			setNewYear(res.data.year)
-			setNewPrice(res.data.price)
+			setCarInfo(res.data);
+			setNewName(res.data.name.replace(/-+/g, ' '));
+			setNewYear(res.data.year);
+			setNewPrice(res.data.price);
+			setMakeId(res.data.make_id);
 		})
 		.catch(err => console.error(err));
-	}, [])
+	}, []);
 
 	const editingVehicle = async () => {
 		try {
@@ -40,14 +42,13 @@ const EditCar = () => {
 				},
 				data: {
 					name: newName.toLowerCase().trim().replace(/\s+/g, '-'),
-					price: parseInt(newPrice),
-					year: parseInt(newYear),
+					price: parseInt(newPrice.replace(/-+/g, '')),
+					year: parseInt(newYear.replace(/-+/g, '')),
 				}
 			});
-			
+
+			await vehicleModel.updateCollection();
 			navigate(`/${id}`, { replace: false });
-			vehicleModel.updateCollection();
-			
 		} catch (err) {
 			console.error(err)
 		}
@@ -62,9 +63,26 @@ const EditCar = () => {
 					Authorization: `bearer ${accessToken}`,
 				}
 			})
-			navigate('/', { replace: false })
+			await vehicleModel.updateCollection();
+
+			if (!vehicleModel.collection.some(elem => elem.make_id === makeId)) {
+				try {
+					await axios({
+						method: "delete",
+						url: `https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleMake/${makeId}`,
+						headers: {
+							Authorization: `bearer ${accessToken}`,
+						}
+					})
+					await vehicleMake.updateCollection();
+				} catch (err) {
+					console.error(err);
+				}
+			}
+			
+			navigate(`/`, { replace: true });
 		} catch (err) {
-			console.error(err)
+			console.error(err);
 		}
 	}
 

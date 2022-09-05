@@ -8,9 +8,14 @@ const Input = ({ label, type, data, setData, styles }) => {
 			<input 
 				id={label.toLowerCase()}
 				value={data} 
-				type={type || 'text'} 
+				type={'text'} 
 				onChange={(e) => {
-					setData(e.currentTarget.value);
+					if (type === 'number') {
+						setData(e.currentTarget.value.replace(/[^0-9]/g, ""));
+					} else {
+						setData(e.currentTarget.value.replace(/[^a-žA-Ž0-9 ]/g, ""));
+					}
+					
 					if (e.currentTarget.value.length > 0) {
 						e.currentTarget.classList.remove('red_color_outline');
 						setError(false);

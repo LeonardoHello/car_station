@@ -6,6 +6,7 @@ import axios from "axios";
 import useAuth from "../useAuth";
 import Form from "./Form"
 import Input from "./Input";
+import { useEffect } from "react";
 
 const CreateCar = () => {
 	const [newMake, setNewMake] = useState('');
@@ -14,6 +15,10 @@ const CreateCar = () => {
 	const [newPrice, setNewPrice] = useState('');
 	const accessToken = useAuth();
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		console.log(newYear, newPrice);
+	}, [newYear, newPrice])
 
 	const creatingVehicle = async () => {
 		const existingMake = vehicleMake.collection.find(elem => elem.name === newMake.toLowerCase().trim().replace(/\s+/g, '-'));
@@ -42,15 +47,14 @@ const CreateCar = () => {
 							name: newName.toLowerCase().trim().replace(/\s+/g, '-'),
 							make: creatingMake.data.name,
 							make_id: creatingMake.data.id,
-							year: parseInt(newYear),
-							price: parseInt(newPrice)
+							year: parseInt(newYear.replace(/-+/g, '')),
+							price: parseInt(newPrice.replace(/-+/g, ''))
 						}
 					})
 					
+					await vehicleMake.updateCollection();
+					await vehicleModel.updateCollection();
 					navigate(`/${newModel.data.id}`, { replace: false });
-					vehicleMake.updateCollection();
-					vehicleModel.updateCollection();
-					
 				} catch(err) {
 					console.error(err);
 				}
@@ -70,14 +74,13 @@ const CreateCar = () => {
 						name: newName.toLowerCase().trim().replace(/\s+/g, '-'),
 						make: existingMake.name,
 						make_id: existingMake.id,
-						year: parseInt(newYear),
-						price: parseInt(newPrice)
+						year: parseInt(newYear.replace(/-+/g, '')),
+						price: parseInt(newPrice.replace(/-+/g, ''))
 					}
 				})
 
+				await vehicleModel.updateCollection();
 				navigate(`/${newModel.data.id}`, { replace: false });
-				vehicleModel.updateCollection();
-
 			} catch (err) {
 				console.error(err);
 			}

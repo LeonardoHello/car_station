@@ -23,7 +23,7 @@ class vehicleManufacturerCollection {
 	}
 
 	async updateCollection() {
-		const updating = await axios({
+		const updatedCollection = await axios({
 			method: "get",
 			url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleMake",
 			params: {
@@ -31,7 +31,7 @@ class vehicleManufacturerCollection {
 			}
 		})
 
-		runInAction(() => this.collection = updating.data.item)
+		runInAction(() => this.collection = updatedCollection.data.item)
 	}
 }
 const vehicleMake = new vehicleManufacturerCollection();
@@ -44,14 +44,14 @@ class vehicleModelCollection {
 	}
 
 	async updateCollection() {
-		const updating = await axios({
+		const updatedCollection = await axios({
 			method: "get",
 			url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel",
 			params: {
 				rpp: 1000
 			}
 		})
-		runInAction(() => this.collection = updating.data.item)
+		runInAction(() => this.collection = updatedCollection.data.item)
 	}
 }
 const vehicleModel = new vehicleModelCollection();
