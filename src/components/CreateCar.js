@@ -6,7 +6,6 @@ import axios from "axios";
 import useAuth from "../useAuth";
 import Form from "./Form"
 import Input from "./Input";
-import { useEffect } from "react";
 
 const CreateCar = () => {
 	const [newMake, setNewMake] = useState('');
@@ -15,10 +14,6 @@ const CreateCar = () => {
 	const [newPrice, setNewPrice] = useState('');
 	const accessToken = useAuth();
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		console.log(newYear, newPrice);
-	}, [newYear, newPrice])
 
 	const creatingVehicle = async () => {
 		const existingMake = vehicleMake.collection.find(elem => elem.name === newMake.toLowerCase().trim().replace(/\s+/g, '-'));
