@@ -42,8 +42,8 @@ const CreateCar = () => {
 							name: newName.toLowerCase().trim().replace(/\s+/g, '-'),
 							make: creatingMake.data.name,
 							make_id: creatingMake.data.id,
-							year: parseInt(newYear.replace(/-+/g, '')),
-							price: parseInt(newPrice.replace(/-+/g, ''))
+							year: parseInt(newYear.replace(/\s+/g, '')),
+							price: parseInt(newPrice.replace(/\s+/g, ''))
 						}
 					})
 					
@@ -69,8 +69,8 @@ const CreateCar = () => {
 						name: newName.toLowerCase().trim().replace(/\s+/g, '-'),
 						make: existingMake.name,
 						make_id: existingMake.id,
-						year: parseInt(newYear.replace(/-+/g, '')),
-						price: parseInt(newPrice.replace(/-+/g, ''))
+						year: parseInt(newYear.replace(/\s+/g, '')),
+						price: parseInt(newPrice.replace(/\s+/g, ''))
 					}
 				})
 
@@ -122,8 +122,8 @@ const CreateCar = () => {
 			>
 				Create
 			</button>
-			<button id='cancle'>
-				<Link to={'/'}>Cancle</Link>
+			<button id='cancel'>
+				<Link to={'/'}>Cancel</Link>
 			</button>
 		</Form>
 	)

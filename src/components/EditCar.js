@@ -30,7 +30,7 @@ const EditCar = () => {
 			setMakeId(res.data.make_id);
 		})
 		.catch(err => console.error(err));
-	}, []);
+	}, [id]);
 
 	const editingVehicle = async () => {
 		try {
@@ -42,8 +42,8 @@ const EditCar = () => {
 				},
 				data: {
 					name: newName.toLowerCase().trim().replace(/\s+/g, '-'),
-					price: parseInt(newPrice.replace(/-+/g, '')),
-					year: parseInt(newYear.replace(/-+/g, '')),
+					price: parseInt(newPrice.replace(/\s+/g, '')),
+					year: parseInt(newYear.replace(/\s+/g, '')),
 				}
 			});
 
