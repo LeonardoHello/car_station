@@ -13,7 +13,7 @@ const Input = ({ label, type, data, setData, styles }) => {
 					if (type === 'number') {
 						setData(e.currentTarget.value.replace(/[^0-9]/g, ""));
 					} else {
-						setData(e.currentTarget.value.replace(/[^a-žA-Ž0-9 ]/g, ""));
+						setData(e.currentTarget.value.replace(/[^a-zA-Z0-9 ]/g, ""));
 					}
 					
 					if (e.currentTarget.value.length > 0) {

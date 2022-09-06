@@ -4,7 +4,7 @@ import brightness, { vehicleMake, vehicleModel, currentFilter } from '../store';
 
 const Filter = ({ filterCategory, setFilterQuery }) => {
 	const [vehicleYears, setVehicleYears] = useState();
-	const prices = ['$1 - $99,999', '$100,000 - $249,999', '$250,000 - $499,999', '$500,000 - $999,999'];
+	const prices = ['$1 - $99,999', '$100,000 - $249,999', '$250,000 - $499,999', '$500,000 -'];
 
 	useEffect(() => {
 		if (!vehicleModel.collection) return
@@ -20,9 +20,11 @@ const Filter = ({ filterCategory, setFilterQuery }) => {
 		} else if (filterCategory === 'Year') {
 			setFilterQuery(`where year = ${name}`);
 		} else if (filterCategory === 'Price') {
-			setFilterQuery(`where price > ${!name.split('-')[0].includes(',') ? 
-			parseInt(name.split('-')[0].slice(1)) : 
-			parseInt(name.split('-')[0].split(',').join('').slice(1))} and price < ${parseInt(name.split('-')[1].split(',').join('').slice(2))}`);
+			if (parseInt(name.split('-')[0].replace(/[^0-9]/g, "")) === 500000) {
+				setFilterQuery(`where price > ${name.split('-')[0].replace(/[^0-9]/g, "")}`);
+			} else {
+				setFilterQuery(`where price > ${name.split('-')[0].replace(/[^0-9]/g, "")} and price < ${name.split('-')[1].replace(/[^0-9]/g, "")}`);
+			}
 		}
 	}
 
