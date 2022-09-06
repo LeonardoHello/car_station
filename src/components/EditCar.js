@@ -33,6 +33,7 @@ const EditCar = () => {
 	}, [id]);
 
 	const editingVehicle = async () => {
+		console.log(newPrice);
 		try {
 			await axios({
 				method: "patch",
@@ -42,8 +43,8 @@ const EditCar = () => {
 				},
 				data: {
 					name: newName.toLowerCase().trim().replace(/\s+/g, '-'),
-					price: parseInt(newPrice.replace(/\s+/g, '')),
-					year: parseInt(newYear.replace(/\s+/g, '')),
+					price: parseInt(newPrice.toString().replace(/\s+/g, '')),
+					year: parseInt(newYear.toString().replace(/\s+/g, '')),
 				}
 			});
 
@@ -127,7 +128,7 @@ const EditCar = () => {
 					Save
 				</button>
 				<button id='delete' onClick={deletingVehicle}>Delete</button>
-				<button id='cancle'>
+				<button id='cancel'>
 					<Link to={"/"}>Cancle</Link>
 				</button>
 			</Form>

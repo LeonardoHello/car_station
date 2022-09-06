@@ -42,8 +42,8 @@ const CreateCar = () => {
 							name: newName.toLowerCase().trim().replace(/\s+/g, '-'),
 							make: creatingMake.data.name,
 							make_id: creatingMake.data.id,
-							year: parseInt(newYear.replace(/\s+/g, '')),
-							price: parseInt(newPrice.replace(/\s+/g, ''))
+							year: parseInt(newYear.toString().replace(/\s+/g, '')),
+							price: parseInt(newPrice.toString().replace(/\s+/g, ''))
 						}
 					})
 					
@@ -57,6 +57,7 @@ const CreateCar = () => {
 				console.error(err);
 			}
 		} else {
+			console.log(newYear, newPrice);
 			try {
 				const newModel = await axios({
 					method: "post",
