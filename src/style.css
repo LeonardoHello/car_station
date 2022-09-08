@@ -85,6 +85,12 @@ header {
   transition: all .5s;
 }
 
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 button {
   background-color: unset;
   border-radius: .3rem;
@@ -173,17 +179,41 @@ button:hover, a:not(#logo a):hover {
   background: rgba(152, 152, 152, 0.697);
 }
 
-#search_input {
-  margin: 2rem 0;
+#search {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+#search input {
   min-width: 30rem;
   border-width: 2px;
   border-style: solid;
 }
 
+#rpp {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: fit-content;
+  padding: .5rem 1rem;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 2rem;
+  background-color: unset;
+  user-select: none;
+}
+
+#rpp > * {
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
 #thead {
   display: grid;
   gap: 1rem;
-  grid-template-columns: 1fr 1.5fr repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1.5fr) repeat(3, 1fr);
   padding: 1rem 2rem;
   border-radius: .5rem;
 }
@@ -212,7 +242,7 @@ button:hover, a:not(#logo a):hover {
 
 .list {
   display: grid;
-  grid-template-columns: 1fr 1.5fr repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1.5fr) repeat(3, 1fr);
   padding: 2rem;
   gap: 1rem;
 }
@@ -240,8 +270,8 @@ button:hover, a:not(#logo a):hover {
 }
 
 .arrows svg {
-  height: .5rem;
-  width: 1rem;
+  height: .4rem;
+  width: .8rem;
 }
 
 .arrows svg:first-of-type {
@@ -503,7 +533,11 @@ input::placeholder {
 }
 
 @media only screen and (max-width: 600px) {
-  #search_input {
+  #search {
+    flex-direction: column;
+  }
+
+  #search input {
     min-width: 100%;
   }
 }
