@@ -28,15 +28,24 @@ const Table = () => {
 			params: {
 				rpp: rpp,
 				page: page,
-				sort: sort.value && `${sort.value}|${order.direction}`,
+				sort: sort.value && (sort.value !== 'year' && sort.value !== 'price') && `${sort.value}|${order.direction}`,
 				searchQuery: 
-					filterQuery && !searchQuery ? 
-					filterQuery : 
-					!filterQuery && searchQuery ? 
-					searchQuery :
-					filterQuery && searchQuery ?
-					`${filterQuery} and (${searchQuery.split(' ').slice(1).join(' ')})` :
-					null
+					sort.value === 'year' || sort.value === 'price' ?
+						filterQuery && !searchQuery ? 
+						`${filterQuery} order by cast(${sort.value} as int) ${order.direction}` : 
+						!filterQuery && searchQuery ? 
+						`${searchQuery} order by cast(${sort.value} as int) ${order.direction}` :
+						filterQuery && searchQuery ?
+						`${filterQuery} and (${searchQuery.replace('where ', '')}) order by cast(${sort.value} as int) ${order.direction}` :
+						`order by cast(${sort.value} as int) ${order.direction}` 
+					: 
+						filterQuery && !searchQuery ? 
+						filterQuery : 
+						!filterQuery && searchQuery ? 
+						searchQuery :
+						filterQuery && searchQuery ?
+						`${filterQuery} and (${searchQuery.replace('where ', '')})` :
+						null
 			}
 		})
 		.then(res => {

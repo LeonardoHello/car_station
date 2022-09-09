@@ -280,7 +280,7 @@ button:hover, a:not(#logo a):hover {
 
 #paging {
   display: flex;
-  margin-top: 4rem;
+  margin-top: 2rem;
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;

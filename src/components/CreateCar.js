@@ -57,7 +57,6 @@ const CreateCar = () => {
 				console.error(err);
 			}
 		} else {
-			console.log(newYear, newPrice);
 			try {
 				const newModel = await axios({
 					method: "post",

@@ -33,7 +33,6 @@ const EditCar = () => {
 	}, [id]);
 
 	const editingVehicle = async () => {
-		console.log(newPrice);
 		try {
 			await axios({
 				method: "patch",
