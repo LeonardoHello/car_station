@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
 import { observer } from 'mobx-react-lite'
-import brightness, { vehicleMake, vehicleModel, currentFilter } from '../store';
+import brightness, { vehicleMake, currentFilter } from '../store';
 
 const prices = ['$1 - $99,999', '$100,000 - $249,999', '$250,000 - $499,999', '$500,000 -'];
 const styling = (name) => {
@@ -9,20 +8,10 @@ const styling = (name) => {
 		border: `${!brightness.darkMode ? '3px solid #ff008030' : '3px solid #8983f7'}`,
 		color: `${!brightness.darkMode ? '#ff008030' : '#8983f7'}`,
 		fontWeight: '600',
-		transition: 'unset'
 	}
 }
 
-const Filter = ({ filterCategory, setFilterQuery }) => {
-	const [vehicleYears, setVehicleYears] = useState();
-
-	useEffect(() => {
-		if (!vehicleModel.collection) return
-		const years = [];
-		vehicleModel.collection.map(elem => !years.includes(parseInt(elem.year)) ? years.push(parseInt(elem.year)) : null);
-		setVehicleYears(years);
-	}, [vehicleModel.collection]);
-
+const Filter = ({ filterCategory, setFilterQuery, vehicleYears }) => {
 	const settingCurrentFilter = (name) => {
 		currentFilter.settingValue(name);
 		if (filterCategory === 'Make') {
@@ -45,44 +34,44 @@ const Filter = ({ filterCategory, setFilterQuery }) => {
 
 	return (
 		filterCategory === 'Make' ?
-			vehicleMake.collection && vehicleMake.collection.map(elem => 
-				<button 
-					key={elem.id} 
-					style={styling(elem.name === currentFilter.value)}
-					onClick={() => 
-						currentFilter.value !== elem.name ? 
-						settingCurrentFilter(elem.name) : 
-						removingCurrentFilter()
-					} 
-				>
-					{elem.name}
-				</button>) : 
+		vehicleMake.collection && vehicleMake.collection.map(elem => 
+			<button 
+				key={elem.id} 
+				style={styling(elem.name === currentFilter.value)}
+				onClick={() => 
+					currentFilter.value !== elem.name ? 
+					settingCurrentFilter(elem.name) : 
+					removingCurrentFilter()
+				} 
+			>
+				{elem.name}
+			</button>) : 
 		filterCategory === 'Year' ?
-			vehicleYears.sort().map((elem, index) => 
-				<button 
-					key={index} 
-					style={styling(elem === currentFilter.value)} 
-					onClick={() => 
-						currentFilter.value !== elem ? 
-						settingCurrentFilter(elem) : 
-						removingCurrentFilter()
-					}
-				>
-					{elem}
-				</button>) :
+		vehicleYears && vehicleYears.sort().map((elem, index) => 
+			<button 
+				key={index} 
+				style={styling(elem === currentFilter.value)} 
+				onClick={() => 
+					currentFilter.value !== elem ? 
+					settingCurrentFilter(elem) : 
+					removingCurrentFilter()
+				}
+			>
+				{elem}
+			</button>) :
 		filterCategory === 'Price' ?
-			prices.map((elem, index) => 
-				<button 
-					key={index} 
-					style={styling(elem === currentFilter.value)} 
-					onClick={() => 
-						currentFilter.value !== elem ? 
-						settingCurrentFilter(elem) : 
-						removingCurrentFilter()
-					}
-				>
-					{elem}
-				</button>) :
+		prices.map((elem, index) => 
+			<button 
+				key={index} 
+				style={styling(elem === currentFilter.value)} 
+				onClick={() => 
+					currentFilter.value !== elem ? 
+					settingCurrentFilter(elem) : 
+					removingCurrentFilter()
+				}
+			>
+				{elem}
+			</button>) :
 		null
 	)
 }

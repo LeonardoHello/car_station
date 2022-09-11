@@ -4,7 +4,7 @@
   margin: 0;
   line-height: 1;
   font-family: 'Poppins', sans-serif;
-  transition: background-color .3s, color .3s, fill .3s, border-color .3s, filter .3s;
+  transition: background-color .3s, color .3s, fill .3s, border .3s, border-color .3s, filter .3s;
 }
 
 a {
@@ -164,6 +164,10 @@ button:hover, a:not(#logo a):hover {
   padding-bottom: 1rem;
 }
 
+#filter_type > * {
+  font-size: 1.4rem;
+}
+
 #filter_type::-webkit-scrollbar {
   height: .75rem;
   border-radius: 1rem;
@@ -182,12 +186,13 @@ button:hover, a:not(#logo a):hover {
 #search {
   display: flex;
   align-items: flex-end;
+  flex-direction: column;
   justify-content: space-between;
   gap: 2rem;
 }
 
 #search input {
-  min-width: 30rem;
+  min-width: 100%;
   border-width: 2px;
   border-style: solid;
 }
@@ -213,7 +218,7 @@ button:hover, a:not(#logo a):hover {
 #thead {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(2, 1.5fr) repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1.5fr) repeat(2, 1fr);
   padding: 1rem 2rem;
   border-radius: .5rem;
 }
@@ -242,7 +247,7 @@ button:hover, a:not(#logo a):hover {
 
 .list {
   display: grid;
-  grid-template-columns: repeat(2, 1.5fr) repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1.5fr) repeat(2, 1fr);
   padding: 2rem;
   gap: 1rem;
 }
@@ -256,6 +261,7 @@ button:hover, a:not(#logo a):hover {
 
 .list > * {
   word-break: break-all;
+  text-align: left;
 }
 
 .list p:not(.list p:first-of-type, .list p:nth-of-type(2)) {
@@ -401,7 +407,7 @@ input {
   font-size: 1.6rem;
   outline: unset;
   border-radius: .5rem;
-  transition: outline .3s;
+  transition: border .3s;
   background-color: rgb(255, 255, 255);
 }
 
@@ -415,7 +421,7 @@ input::placeholder {
   color: red;
 }
 
-.all_color_white p:not(.list p:last-of-type), .all_color_white a, .all_color_white button:not(#paging button), .all_color_white i, .all_color_white h2, .all_color_white h1, .all_color_white label {
+.all_color_white p, .all_color_white a, .all_color_white button:not(#paging button), .all_color_white i, .all_color_white h2, .all_color_white h1, .all_color_white label {
   color: white;
   border-color: white;
 }
@@ -532,13 +538,25 @@ input::placeholder {
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (min-width: 600px) {
   #search {
-    flex-direction: column;
+    flex-direction: unset;
   }
 
   #search input {
-    min-width: 100%;
+    min-width: 30rem;
+  }
+
+  #thead {
+    grid-template-columns: repeat(2, 1.5fr) repeat(3, 1fr);
+  }
+
+  .list {
+    grid-template-columns: repeat(2, 1.5fr) repeat(3, 1fr);
+  }
+
+  #filter > div:nth-of-type(2) > * {
+    flex-basis: unset;
   }
 }
 
@@ -567,9 +585,5 @@ input::placeholder {
 
   .list p {
     font-size: 1.8rem;
-  }
-
-  #filter > div:nth-of-type(2) > * {
-    flex-basis: unset;
   }
 }

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import axios from "axios";
-import brightness, { sort, order, currentFilter } from '../store';
+import brightness, { sort, order, currentFilter, vehicleModel } from '../store';
 import TableHead from './TableHead';
 import Filter from './Filter';
 
@@ -16,7 +16,6 @@ const filterStyling = (name) => {
 		border: `${!brightness.darkMode ? '3px solid #ff008030' : '3px solid #8983f7'}`,
 		color: `${!brightness.darkMode ? '#ff008030' : '#8983f7'}`,
 		fontWeight: '600',
-		transition: 'unset'
 	}
 }
 const rppStyling = (name) => {
@@ -35,6 +34,16 @@ const Table = () => {
 	const [filterCategory, setFilterCategory] = useState();
 	const [filterQuery, setFilterQuery] = useState();
 	const [searchQuery, setSearchQuery] = useState();
+	const [vehicleYears, setVehicleYears] = useState();
+	const [rootWidth, setRootWidth] = useState();
+
+	useEffect(() => {
+		const resizeObserver = new ResizeObserver(entries => setRootWidth(entries[0].contentRect.width))
+		resizeObserver.observe(document.querySelector('body'));
+		return () => resizeObserver.disconnect();
+	}, [rootWidth]);
+
+	useEffect(() => setPage(1), [filterQuery, searchQuery, totalPages]);
 
  	useEffect(() => {
 		const cancelRequest = axios.CancelToken.source();
@@ -70,13 +79,8 @@ const Table = () => {
 			setTotalPages(Math.ceil(res.data.totalRecords/res.data.recordsPerPage))
 		})
 		.catch(err => console.error(err));
-
 		return () => cancelRequest.cancel();
 	}, [rpp, page, sort.value, order.direction, filterQuery, searchQuery]);
-
-	useEffect(() => {
-		setPage(1);
-	}, [filterQuery, searchQuery, totalPages]);
 
 	const updatingSearchQuery = (e) => {
 		if (e.currentTarget.value.trim().replace(/\s+/g, '-').length < 1) return setSearchQuery();
@@ -90,6 +94,14 @@ const Table = () => {
 		currentFilter.removingValue();
 		setFilterCategory(); 
 		setFilterQuery();
+	}
+
+	const settingVehicleYears = () => {
+		if (!vehicleModel.collection) return
+		
+		const years = [];
+		vehicleModel.collection.map(elem => !years.includes(parseInt(elem.year)) ? years.push(parseInt(elem.year)) : null);
+		setVehicleYears(years);
 	}
 
 	const closeFilterBtn = () => {
@@ -114,7 +126,11 @@ const Table = () => {
 							<button 
 								key={index} 
 								style={filterStyling(elem === filterCategory)}
-								onClick={() => displayFilterCategories(elem)}
+								onClick={() => {
+										displayFilterCategories(elem)
+										if (!vehicleYears && elem === 'Year') settingVehicleYears()
+									}
+								}
 							>
 								{elem}
 							</button>
@@ -125,6 +141,7 @@ const Table = () => {
 					<Filter 
 						filterCategory={filterCategory} 
 						setFilterQuery={setFilterQuery}
+						vehicleYears={vehicleYears}
 					/>
 				</div>
 			</div>
@@ -154,13 +171,22 @@ const Table = () => {
 					{info.map((elem, index) => <TableHead key={index} name={elem}/>)}
 				</div>
 				{vehicles && vehicles.map(elem => (
+					rootWidth >= 600 ?
 					<div key={elem.id} className={`list ${!brightness.darkMode ? 'sun_color_border sun_color_hover' : 'moon_color_border moon_color_hover'}`}>
 						<p>{elem.make.replace(/-+/g, ' ')}</p>
 						<p>{elem.name.replace(/-+/g, ' ')}</p>
 						<p>{elem.year}</p>
 						<p>{`$${Intl.NumberFormat('en', {notation: 'compact'}).format(elem.price)}`}</p>
 						<p><Link to={`${elem.id}`}>details</Link></p>
-					</div>
+					</div> :
+					<Link key={elem.id} to={`${elem.id}`}>
+						<div className={`list ${!brightness.darkMode ? 'sun_color_border sun_color_hover' : 'moon_color_border moon_color_hover'}`}>
+							<p>{elem.make.replace(/-+/g, ' ')}</p>
+							<p>{elem.name.replace(/-+/g, ' ')}</p>
+							<p>{elem.year}</p>
+							<p>{`$${Intl.NumberFormat('en', {notation: 'compact'}).format(elem.price)}`}</p>
+						</div> 
+					</Link>
 				))}
 			</div>
 
