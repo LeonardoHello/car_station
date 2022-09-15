@@ -4,7 +4,14 @@
   margin: 0;
   line-height: 1;
   font-family: 'Poppins', sans-serif;
-  transition: background-color .3s, color .3s, fill .3s, border .3s, border-color .3s, filter .3s;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+p, label, h1, i {
+  transition: color .3s
 }
 
 a {
@@ -15,10 +22,7 @@ a {
   font-weight: 300;
   cursor: pointer;
   border-color: rgba(0, 0, 0, 0.477);
-}
-
-html {
-  font-size: 62.5%;
+  transition: color .3s, border-color .3s, filter .3s;
 }
 
 #root {
@@ -29,6 +33,7 @@ html {
   font-size: 1.6rem;
   padding: 2rem 1.5rem 6rem 1.5rem;
   gap: 3rem;
+  transition: background-color .3s
 }
 
 #root > * {
@@ -97,14 +102,15 @@ button {
   font-size: 1.8rem;
   user-select: none;
   cursor: pointer;
+  transition: color .3s, border .3s, filter .3s;
 }
 
 button:not(#filter button) {
   border: unset;
 }
 
-button:hover, a:not(#logo a):hover {
-  filter: opacity(.6);
+button:hover, a:not(#logo a, button a):hover {
+  filter: opacity(.4);
 }
 
 :where(#filter) {
@@ -117,7 +123,7 @@ button:hover, a:not(#logo a):hover {
 
 :where(#filter button:not(#create_btn)) {
   font-weight: 300;
-  border: 1px solid black;
+  border: 1px solid;
   padding: .4em 1.5em;
 }
 
@@ -125,7 +131,7 @@ button:hover, a:not(#logo a):hover {
   display: flex;
   align-items: center;
   font-weight: 300;
-  border: 1px solid rgba(0, 0, 0, 0.477);
+  border: 1px solid;
 }
 
 #create_btn a {
@@ -208,6 +214,7 @@ button:hover, a:not(#logo a):hover {
   border-radius: 2rem;
   background-color: unset;
   user-select: none;
+  transition: border-color .3s;
 }
 
 #rpp > * {
@@ -282,6 +289,10 @@ button:hover, a:not(#logo a):hover {
 
 .arrows svg:first-of-type {
   transform: rotate(180deg);
+}
+
+.arrows path {
+  transition: fill .3s;
 }
 
 #paging {
@@ -407,7 +418,7 @@ input {
   font-size: 1.6rem;
   outline: unset;
   border-radius: .5rem;
-  transition: border .3s;
+  transition: outline .3s, border .3s;
   background-color: rgb(255, 255, 255);
 }
 

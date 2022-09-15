@@ -5,12 +5,12 @@ import brightness from '../store';
 
 const AppLayout = () => {
 	useEffect(() => {
-		if (!brightness.darkMode) {
-			document.getElementById('root').classList.remove('dark_bg');
-		} else {
+		if (brightness.darkMode) {
 			document.getElementById('root').classList.add('dark_bg');
+		} else {
+			document.getElementById('root').classList.remove('dark_bg');
 		}
-	}, [!brightness.darkMode]);
+	}, [brightness.darkMode]);
 	return (
 		<>
 			<header>

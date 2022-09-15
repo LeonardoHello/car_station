@@ -34,7 +34,7 @@ const Filter = ({ filterCategory, setFilterQuery, vehicleYears }) => {
 
 	return (
 		filterCategory === 'Make' ?
-		vehicleMake.collection && vehicleMake.collection.map(elem => 
+		vehicleMake.collection?.map(elem => 
 			<button 
 				key={elem.id} 
 				style={styling(elem.name === currentFilter.value)}
@@ -47,7 +47,7 @@ const Filter = ({ filterCategory, setFilterQuery, vehicleYears }) => {
 				{elem.name}
 			</button>) : 
 		filterCategory === 'Year' ?
-		vehicleYears && vehicleYears.sort().map((elem, index) => 
+		vehicleYears?.sort().map((elem, index) => 
 			<button 
 				key={index} 
 				style={styling(elem === currentFilter.value)} 

@@ -37,6 +37,7 @@ const Table = () => {
 	const [vehicleYears, setVehicleYears] = useState();
 	const [rootWidth, setRootWidth] = useState();
 
+
 	useEffect(() => {
 		const resizeObserver = new ResizeObserver(entries => setRootWidth(entries[0].contentRect.width))
 		resizeObserver.observe(document.querySelector('body'));
@@ -170,7 +171,7 @@ const Table = () => {
 				<div id='thead' className={!brightness.darkMode ? 'sun_color_bg' : 'moon_color_bg'}>
 					{info.map((elem, index) => <TableHead key={index} name={elem}/>)}
 				</div>
-				{vehicles && vehicles.map(elem => (
+				{vehicles?.map(elem => (
 					rootWidth >= 600 ?
 					<div key={elem.id} className={`list ${!brightness.darkMode ? 'sun_color_border sun_color_hover' : 'moon_color_border moon_color_hover'}`}>
 						<p>{elem.make.replace(/-+/g, ' ')}</p>
@@ -179,7 +180,7 @@ const Table = () => {
 						<p>{`$${Intl.NumberFormat('en', {notation: 'compact'}).format(elem.price)}`}</p>
 						<p><Link to={`${elem.id}`}>details</Link></p>
 					</div> :
-					<Link key={elem.id} to={`${elem.id}`}>
+					<Link key={elem.id} to={`${elem.id}`} style={{transition: 'unset'}}>
 						<div className={`list ${!brightness.darkMode ? 'sun_color_border sun_color_hover' : 'moon_color_border moon_color_hover'}`}>
 							<p>{elem.make.replace(/-+/g, ' ')}</p>
 							<p>{elem.name.replace(/-+/g, ' ')}</p>
