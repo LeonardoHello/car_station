@@ -1,0 +1,365 @@
+@use './global' as *
+@use './colors' as *
+@use './keyframes' as *
+
+@mixin flex($direction, $align, $jusify, $gap)
+	display: flex
+	flex-direction: $direction
+	align-items: $align
+	justify-content: $jusify
+	gap: $gap
+
+.app
+	@include flex(column, stretch, flex-start, unset)
+	background-color: var(--mainBg)
+	min-height: 100vh
+	font-size: 1.4rem
+	color: var(--text)
+
+.header
+	@include flex(column, center, space-between, 1rem)
+	background-color: var(--headerBg)
+	padding: 2.4rem 1.6rem
+
+	&__titleContainer
+		@include flex(row, center, space-between, .5rem)
+		color: $gold
+		cursor: pointer
+
+	&__title
+		font-size: 2rem
+		font-weight: 700
+		letter-spacing: .2rem
+		overflow-wrap: anywhere
+		user-select: none
+
+	&__title::after
+		content: ""
+		animation: typing 3.5s infinite ease-in
+
+	&__cursor
+		background-color: $gold
+		height: 2.4rem
+		width: 1.4rem
+		margin-left: -.4rem
+		animation: cursor 2s infinite alternate ease-in
+		opacity: .6
+
+.theme
+	@include flex(row, center, var(--themeContainer), unset)
+	padding: .3rem
+	height: 2.8rem
+	width: 5rem
+	border-radius: 100vmax
+	background-color: var(--themeBg)
+	cursor: pointer
+	color: var(--themeIcon)
+
+	&:hover
+		color: $gold
+
+	&__iconContainer
+		display: grid
+		place-items: center
+		position: relative
+		aspect-ratio: 1/1
+		height: 100%
+		border-radius: 100vmax
+		background-color: $white
+
+	&__icon
+		position: absolute
+		color: inherit
+		font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20
+		font-size: 1.4rem
+		user-select: none
+
+.main
+	@include flex(column, stretch, flex-start, 2rem)
+	align-self: center
+	flex-grow: 2
+	padding: 5.2rem 1.4rem
+	width: min(120rem, 100%)
+
+	&--form
+		width: min(70rem, 100%)
+		gap: 3rem
+
+	&__error
+		align-self: center
+		font-size: 3.6rem
+		font-weight: 600
+
+	&__navigationContainer
+		@include flex(row, center, space-between, 2rem)
+
+	&__navigation
+		align-self: flex-end
+		font-weight: 500
+		border-radius: .4rem
+		color: var(--currentCategory)
+		background-color: var(--currentCategoryBg)
+		padding: 1em 1.4em
+		user-select: none
+
+		&--left
+			align-self: flex-start
+
+	&__image
+		width: 100%
+		height: fit-content
+		object-fit: contain
+
+	&__paragraph
+		line-height: 1.5
+
+.search
+	@include flex(row, center, space-between, unset)
+	position: relative
+
+	&__icon
+		position: absolute
+		font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 20
+		left: 1rem
+		color: #b7bdc6
+		pointer-events: none
+
+	&__input
+		border: 1px solid var(--inputBorder)
+		padding: 1rem 4rem
+		border-radius: .3rem
+		color: var(--input)
+		background-color: inherit
+		font-weight: 400
+		flex-grow: 2
+		transition: .2s border-color
+
+		&:focus
+			border-color: $gold
+
+		&::placeholder
+			color: #b7bdc6
+
+	&:focus
+		border-color: $gold
+
+.filter
+	@include flex(column, flex-start, center, .6rem)
+	color: var(--filter)
+	font-weight: 500
+
+	&__category, &__query
+		@include flex(row, center, unset, 1rem)
+		max-width: 100%
+		overflow-x: scroll
+		padding-bottom: .4rem
+
+		&::-webkit-scrollbar
+			max-height: .5rem
+
+		&::-webkit-scrollbar-track
+			opacity: 0
+
+		&::-webkit-scrollbar-thumb
+			background: #8484849a
+			border-radius: 100vmax
+
+	&__button
+		font-weight: 600
+		border-radius: .6rem
+
+		&--category
+			padding: 1em 1.4em
+
+		&--query
+			padding: .6em .8em
+			white-space: nowrap
+
+		&--all, &--currentQuery
+			color: var(--text)
+			background-color: var(--filterBg)
+
+		&--currentCategory
+			color: var(--currentCategory)
+			background-color: var(--currentCategoryBg)
+
+.table
+	@include flex(column, stretch, unset, unset)
+	font-size: 1.2rem
+
+	&__row
+		display: grid
+		gap: 2rem
+		grid-template-columns: repeat(2, 1.5fr) repeat(2, 1fr)
+		align-items: center
+		justify-items: flex-end
+		padding: 0 1.2em
+		min-height: 6rem
+		background-color: var(--mainBg)
+
+		&--head
+			min-height: unset
+			justify-items: unset
+			padding: .8em 1.2em
+			border-radius: .6rem
+			background-color: var(--headerBg)
+
+	&__data
+
+		&--left
+			justify-self: flex-start
+
+		&--details
+			font-weight: 200
+
+			&:hover
+				color: $gold
+
+	&__header
+		@include flex(row, center, unset, .2rem)
+		user-select: none
+		width: fit-content
+		cursor: pointer
+		font-size: 1rem
+
+		&--right
+			justify-self: flex-end
+
+		&__name
+			font-weight: 500
+
+		&__arrowContainer
+			@include flex(column, center, unset, .3rem)
+			margin-top: .3rem
+
+		&__arrow
+			margin-left: -.2rem
+			font-size: 1.4rem
+			line-height: .2
+			color: var(--arrow)
+
+			&--up
+				rotate: 180deg
+
+	&__body
+		@include flex(column, stretch, unset, .1rem)
+		background-color: var(--tableBodyBg)
+
+.pages
+	@include flex(row, center, center, 1rem)
+
+	> *
+		user-select: none
+
+	&__arrow
+		font-size: 2rem
+		line-height: .6
+		cursor: pointer
+
+	&__number
+		font-size: 1.4rem
+		font-weight: 600
+		padding: .8em 0
+		width: 2.6rem
+		text-align: center
+		border-radius: .6rem
+		cursor: pointer
+
+		&--current
+			background-color: var(--filterBg)
+
+		&:hover
+			background-color: var(--headerBg)
+
+.limit
+	@include flex(row, center, center, 2rem)
+	align-self: flex-end
+	padding: .8rem 1.6rem
+	border-radius: .6rem
+	border: .1rem solid var(--tableBodyBg)
+
+	&__number
+		font-size: 1.2rem
+		cursor: pointer
+
+.form
+	@include flex(column, stretch, flex-start, 3rem)
+
+	&__label
+		@include flex(column, stretch, flex-start, 1rem)
+		position: relative
+
+		&--readonly
+			pointer-events: none
+			opacity: .5
+
+	&__error
+		position: absolute
+		opacity: 0
+		color: #ea5555
+		right: 1rem
+		bottom: .8rem
+		pointer-events: none
+		animation: errorMessage 4s ease-out forwards
+
+	&__input
+		border: .1rem solid var(--inputBorder)
+		padding: 1em 6.5em 1em 1.5em
+		border-radius: .6rem
+		transition: border-color .3s
+
+		&--error
+			animation: error 4s ease-out
+
+		&:focus
+			border: .1rem solid $gold
+
+	&__buttonContainer
+		@include flex(column, stretch, flex-start, 2rem)
+
+	&__button
+		font-weight: 700
+		padding: 1em 0
+		border-radius: .4rem
+		color: var(--formButton)
+
+		&--save
+			margin-top: 2rem
+			color: $black
+			background-color: rgb(252, 213, 53)
+
+		&--delete
+			background-color: var(--text)
+
+@media only screen and (min-width: 20rem)
+	.header
+		flex-direction: row
+
+@media only screen and (min-width: 50rem)
+	.table
+		font-size: 1.4rem
+
+		&__row
+			min-height: 5rem
+			grid-template-columns: repeat(2, 1.5fr) repeat(3, 1fr)
+
+			&--head
+				padding: .6em 1.2em
+				min-height: unset
+
+		&__header
+			font-size: 1.2rem
+
+	.search__input
+		width: 50rem
+		flex-grow: unset
+
+	.header
+		padding: 5rem 4rem
+
+		&__title
+			font-size: 4rem
+
+		&__cursor
+			height: 4.8rem
+			width: 2.8rem

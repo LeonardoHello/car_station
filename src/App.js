@@ -1,21 +1,38 @@
-import { Routes, Route } from "react-router-dom";
+import {
+	createBrowserRouter,
+	RouterProvider,
+	Route,
+	createRoutesFromElements,
+} from "react-router-dom";
 import AppLayout from "./components/AppLayout";
-import Table from "./components/Table";
-import CarInfo from "./components/CarInfo";
-import EditCar from "./components/EditCar";
-import CreateCar from "./components/CreateCar";
+import Home, { loader as homeLoader } from "./components/pages/Home";
+import Detail, { loader as detailLoader } from "./components/pages/Detail";
+import Edit, {
+	loader as editLoader,
+	action as editAction,
+} from "./components/pages/Edit";
+import Create, { action as createAction } from "./components/pages/Create";
 
-const App = () => {
-  return (
-    <Routes>
-      <Route element={<AppLayout />}>
-        <Route path="" element={<Table />}/>
-        <Route path=":id" element={<CarInfo />}/>
-        <Route path=":id/edit" element={<EditCar />}/>
-        <Route path="create" element={<CreateCar />}/>
-      </Route>
-    </Routes>
-  );
-}
+const router = createBrowserRouter(
+	createRoutesFromElements(
+		<Route path="/" element={<AppLayout />}>
+			<Route index element={<Home />} loader={homeLoader} />
+			<Route
+				path="vehicle/create"
+				element={<Create />}
+				action={createAction}
+			/>
+			<Route path="vehicle/:id" element={<Detail />} loader={detailLoader} />
+			<Route
+				path="vehicle/:id/edit"
+				element={<Edit />}
+				loader={editLoader}
+				action={editAction}
+			/>
+		</Route>
+	)
+);
 
-export default App
+const App = () => <RouterProvider router={router} />;
+
+export default App;

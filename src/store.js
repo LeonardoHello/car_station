@@ -1,25 +1,24 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import axios from "axios";
 
-class toggleDarkMode {
-	darkMode = false;
+class Table {
+	search;
+	filter;
+	order;
+	sort;
+	limit;
 
 	constructor() {
-		makeAutoObservable(this)
-	}
-
-	toggleDarkMode() {
-		this.darkMode = !this.darkMode
+		makeAutoObservable(this);
 	}
 }
-const brightness = new toggleDarkMode();
-
+const table = new Table();
 
 class vehicleManufacturerCollection {
 	collection = [];
 
 	constructor() {
-		makeAutoObservable(this)
+		makeAutoObservable(this);
 	}
 
 	async updateCollection() {
@@ -27,11 +26,11 @@ class vehicleManufacturerCollection {
 			method: "get",
 			url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleMake",
 			params: {
-				rpp: 1000
-			}
-		})
+				rpp: 1000,
+			},
+		});
 
-		runInAction(() => this.collection = updatedCollection.data.item)
+		runInAction(() => (this.collection = updatedCollection.data.item));
 	}
 }
 const vehicleMake = new vehicleManufacturerCollection();
@@ -40,7 +39,7 @@ class vehicleModelCollection {
 	collection = [];
 
 	constructor() {
-		makeAutoObservable(this)
+		makeAutoObservable(this);
 	}
 
 	async updateCollection() {
@@ -48,72 +47,53 @@ class vehicleModelCollection {
 			method: "get",
 			url: "https://api.baasic.com/beta/simple-vehicle-app/resources/VehicleModel",
 			params: {
-				rpp: 1000
-			}
-		})
-		runInAction(() => this.collection = updatedCollection.data.item)
+				rpp: 1000,
+			},
+		});
+		runInAction(() => (this.collection = updatedCollection.data.item));
 	}
 }
 const vehicleModel = new vehicleModelCollection();
 
-class toggleOrder {
+class Order {
 	direction = null;
 
 	constructor() {
-		makeAutoObservable(this)
+		makeAutoObservable(this);
 	}
 
 	ascending() {
-		this.direction = "asc"
+		this.direction = "asc";
 	}
 
 	descending() {
-		this.direction = "desc"
+		this.direction = "desc";
 	}
 
 	none() {
-		this.direction = null
+		this.direction = null;
 	}
-
 }
-const order = new toggleOrder();
+const order = new Order();
 
-class sorting {
+class Sorting {
 	value = null;
 
 	constructor() {
-		makeAutoObservable(this)
+		makeAutoObservable(this);
 	}
 
 	settingValue(value) {
-		this.value = value.toLowerCase()
-	}
-
-	removingValue() {
-		this.value = null
-	}
-}
-const sort = new sorting();
-
-class settingCurrentFilter {
-	value = null;
-
-	constructor() {
-		makeAutoObservable(this)
-	}
-
-	settingValue(value) {
-		this.value = value
+		this.value = value.toLowerCase();
 	}
 
 	removingValue() {
 		this.value = null;
 	}
 }
-const currentFilter = new settingCurrentFilter();
+const sort = new Sorting();
 
 vehicleMake.updateCollection();
 vehicleModel.updateCollection();
 
-export default brightness;
-export { vehicleMake, vehicleModel, order, sort, currentFilter };
+export { vehicleMake, vehicleModel, order, sort };

@@ -1,30 +1,44 @@
-import { useEffect } from 'react';
 import { Link, Outlet } from "react-router-dom";
-import { observer } from 'mobx-react-lite'
-import brightness from '../store';
+import { observer } from "mobx-react-lite";
+import { useState } from "react";
 
 const AppLayout = () => {
-	useEffect(() => {
-		if (brightness.darkMode) {
-			document.getElementById('root').classList.add('dark_bg');
-		} else {
-			document.getElementById('root').classList.remove('dark_bg');
-		}
-	}, [brightness.darkMode]);
+	const [darkTheme, setDarkTheme] = useState(true);
 	return (
-		<>
-			<header>
-				<h1 id='logo' >
-					<Link to={"/"} className={!brightness.darkMode ? 'sun_color' : 'moon_color'}>Car Search</Link>
-				</h1>
-				<div id='brightness' onClick={() => brightness.toggleDarkMode()}>
-					<span className={`material-symbols-outlined left sun_color ${!brightness.darkMode ? 'left' : 'right opacity_0'}`}>radio_button_unchecked</span>
-					<span className={`material-symbols-outlined left moon_color ${!brightness.darkMode ? 'left opacity_0' : 'right'}`}>dark_mode</span>
+		<div className={`app ${darkTheme ? "dark" : "light"}`}>
+			<header className="header">
+				<Link to={"/"} className="header__titleContainer">
+					<div className="header__title">CAR_STAT</div>
+					<span className="header__cursor" />
+				</Link>
+				<div
+					className="theme"
+					onClick={() => setDarkTheme((prev) => !prev)}
+				>
+					<div className="theme__iconContainer">
+						{darkTheme ? (
+							<span
+								className={
+									"material-symbols-outlined theme__icon theme__icon"
+								}
+							>
+								dark_mode
+							</span>
+						) : (
+							<span
+								className={
+									"material-symbols-outlined theme__icon theme__icon"
+								}
+							>
+								light_mode
+							</span>
+						)}
+					</div>
 				</div>
 			</header>
 			<Outlet />
-		</>
-	)
-}
+		</div>
+	);
+};
 
-export default observer(AppLayout)
+export default observer(AppLayout);

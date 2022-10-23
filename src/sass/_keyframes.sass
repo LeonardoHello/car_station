@@ -1,0 +1,44 @@
+@keyframes typing
+	10%
+		content: "I"
+
+	30%
+		content: "IO"
+
+	50%
+		content: "ION"
+
+	65%
+		content: "IO"
+
+	70%
+		content: "I"
+
+	80%
+		content: ""
+
+@keyframes cursor
+	100%
+		opacity: 0
+
+@keyframes errorMessage
+	0%
+		opacity: 1
+		bottom: 1rem
+
+	80%
+		bottom: 1rem
+
+	100%
+		opacity: 1
+		bottom: -2rem
+
+@keyframes error
+	0%
+		border-color: #ea5555
+
+	80%
+		border-color: #ea5555
+
+	100%
+		border-color: var(--inputBorder)
