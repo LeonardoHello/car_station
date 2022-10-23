@@ -17,17 +17,17 @@ const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path="/" element={<AppLayout />}>
 			<Route index element={<Home />} loader={homeLoader} />
-			<Route
-				path="vehicle/create"
-				element={<Create />}
-				action={createAction}
-			/>
 			<Route path="vehicle/:id" element={<Detail />} loader={detailLoader} />
 			<Route
 				path="vehicle/:id/edit"
 				element={<Edit />}
 				loader={editLoader}
 				action={editAction}
+			/>
+			<Route
+				path="vehicle/create"
+				element={<Create />}
+				action={createAction}
 			/>
 		</Route>
 	)

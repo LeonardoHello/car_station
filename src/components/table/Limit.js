@@ -1,6 +1,8 @@
+import { observer } from "mobx-react-lite";
+import table from "../../tableStore";
 const limitNumbers = [10, 25, 50, 100];
 
-const Limit = ({ limit, setLimit }) => {
+const Limit = () => {
 	return (
 		<ul className="limit">
 			{limitNumbers.map((elem) => (
@@ -8,9 +10,9 @@ const Limit = ({ limit, setLimit }) => {
 					key={elem}
 					className="limit__number"
 					style={{
-						color: limit === elem && "rgb(240, 185, 11)",
+						color: table.limit === elem && "rgb(240, 185, 11)",
 					}}
-					onClick={() => setLimit(parseInt(elem))}
+					onClick={() => table.updateLimit(elem)}
 				>
 					{elem}
 				</li>
@@ -19,4 +21,4 @@ const Limit = ({ limit, setLimit }) => {
 	);
 };
 
-export default Limit;
+export default observer(Limit);

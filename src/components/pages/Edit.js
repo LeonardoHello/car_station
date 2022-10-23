@@ -7,7 +7,7 @@ import {
 	useNavigation,
 } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import { vehicleMake, vehicleModel } from "../../store";
+import vehicle from "../../vehicleStore";
 import useAuth from "../../useAuth";
 import Label from "../Label";
 import axios from "axios";
@@ -136,7 +136,7 @@ const action = async ({ request, params }) => {
 					},
 				});
 				return redirect(`/vehicle/${params.id}`);
-			} catch (error) {
+			} catch (err) {
 				return "An error occurred!";
 			}
 
@@ -153,9 +153,9 @@ const action = async ({ request, params }) => {
 						Authorization: `bearer ${formData.get("token")}`,
 					},
 				});
-				await vehicleModel.updateCollection();
+				await vehicle.update();
 				if (
-					!vehicleModel.collection.some(
+					!vehicle.models.some(
 						(elem) => elem.make_id === vehicleInfo.data.make_id
 					)
 				) {
@@ -167,13 +167,12 @@ const action = async ({ request, params }) => {
 								Authorization: `bearer ${formData.get("token")}`,
 							},
 						});
-						await vehicleMake.updateCollection();
-					} catch (error) {
+					} catch (err) {
 						return "An error occurred!";
 					}
 				}
 				return redirect("/");
-			} catch (error) {
+			} catch (err) {
 				return "An error occurred!";
 			}
 

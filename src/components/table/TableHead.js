@@ -1,17 +1,17 @@
 import { observer } from "mobx-react-lite";
-import { sort, order } from "../../store";
+import table from "../../tableStore";
 
 const info = ["Make", "Name", "Year", "Price"];
 
-const settingOrder = (name) => {
-	if (sort.value !== name.toLowerCase()) {
-		sort.settingValue(name);
-		order.ascending();
-	} else if (sort.value === name.toLowerCase() && order.direction === "asc") {
-		order.descending();
+const filtering = (name) => {
+	if (table.sort !== name) {
+		table.updateSort(name);
+		table.updateOrder("asc");
+	} else if (table.sort === name && table.order === "asc") {
+		table.updateOrder("desc");
 	} else {
-		sort.removingValue();
-		order.none();
+		table.updateSort("");
+		table.updateOrder("");
 	}
 };
 
@@ -26,7 +26,7 @@ const TableHead = () => {
 							? "table__header"
 							: "table__header table__header--right"
 					}
-					onClick={() => settingOrder(elem)}
+					onClick={() => filtering(elem.toLowerCase())}
 				>
 					<p className="table__header__name">{elem}</p>
 					<div className="table__header__arrowContainer">
@@ -34,8 +34,8 @@ const TableHead = () => {
 							className="material-symbols-outlined table__header__arrow"
 							style={{
 								color:
-									order.direction === "asc" &&
-									sort.value === elem.toLowerCase() &&
+									table.order === "asc" &&
+									table.sort === elem.toLowerCase() &&
 									"rgb(240, 185, 11)",
 							}}
 						>
@@ -45,8 +45,8 @@ const TableHead = () => {
 							className="material-symbols-outlined table__header__arrow"
 							style={{
 								color:
-									order.direction === "desc" &&
-									sort.value === elem.toLowerCase() &&
+									table.order === "desc" &&
+									table.sort === elem.toLowerCase() &&
 									"rgb(240, 185, 11)",
 							}}
 						>

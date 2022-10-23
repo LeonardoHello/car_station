@@ -6,7 +6,7 @@ import {
 	useNavigation,
 } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import { vehicleMake, vehicleModel } from "../../store";
+import vehicle from "../../vehicleStore";
 import useAuth from "../../useAuth";
 import Label from "../Label";
 import axios from "axios";
@@ -22,6 +22,9 @@ const CreateCar = () => {
 			<Link to="../" className="main__navigation main__navigation--left">
 				Go back
 			</Link>
+			{typeof errors === "string" && (
+				<div className="main__error">{errors}</div>
+			)}
 			<Form className="form" method="post" autoComplete="off">
 				<h1 className="form__title">Creating New Vehicle</h1>
 				<Label
@@ -70,7 +73,7 @@ const action = async ({ request }) => {
 		return errors;
 	}
 
-	const existingMake = vehicleMake.collection.find(
+	const existingMake = vehicle.manufacturers.find(
 		(elem) =>
 			elem.name ===
 			formData.get("manufacturer").toLowerCase().trim().replace(/\s+/g, "-")
@@ -112,8 +115,6 @@ const action = async ({ request }) => {
 						price: parseInt(formData.get("price")),
 					},
 				});
-				await vehicleMake.updateCollection();
-				await vehicleModel.updateCollection();
 				return redirect(`/vehicle/${newModel.data.id}`);
 			} catch (err) {
 				return "An error occurred!";
@@ -142,10 +143,9 @@ const action = async ({ request }) => {
 					price: parseInt(formData.get("price")),
 				},
 			});
-			await vehicleModel.updateCollection();
 			return redirect(`/vehicle/${newModel.data.id}`);
 		} catch (err) {
-			console.error(err);
+			return "An error occurred!";
 		}
 	}
 };

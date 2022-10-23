@@ -1,9 +1,9 @@
 import { Link, Outlet } from "react-router-dom";
-import { observer } from "mobx-react-lite";
 import { useState } from "react";
 
 const AppLayout = () => {
 	const [darkTheme, setDarkTheme] = useState(true);
+
 	return (
 		<div className={`app ${darkTheme ? "dark" : "light"}`}>
 			<header className="header">
@@ -17,19 +17,11 @@ const AppLayout = () => {
 				>
 					<div className="theme__iconContainer">
 						{darkTheme ? (
-							<span
-								className={
-									"material-symbols-outlined theme__icon theme__icon"
-								}
-							>
+							<span className={"material-symbols-outlined theme__icon "}>
 								dark_mode
 							</span>
 						) : (
-							<span
-								className={
-									"material-symbols-outlined theme__icon theme__icon"
-								}
-							>
+							<span className={"material-symbols-outlined  theme__icon"}>
 								light_mode
 							</span>
 						)}
@@ -41,4 +33,4 @@ const AppLayout = () => {
 	);
 };
 
-export default observer(AppLayout);
+export default AppLayout;

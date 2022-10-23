@@ -1,7 +1,5 @@
-import { Link, redirect, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import { vehicleMake } from "../../store";
-import useAuth from "../../useAuth";
 import low from "../../assets/low.jpg";
 import mediumLow from "../../assets/medium-low.jpg";
 import mediumHigh from "../../assets/medium-high.jpg";

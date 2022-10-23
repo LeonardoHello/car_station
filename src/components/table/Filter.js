@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { vehicleMake, vehicleModel } from "../../store";
+import table from "../../tableStore";
+import vehicle from "../../vehicleStore";
 
 const filterCategories = ["All", "Make", "Year", "Price"];
 const prices = [
@@ -9,29 +10,28 @@ const prices = [
 	"$500,000 -",
 ];
 
-const Filter = ({ setFilterQuery }) => {
+const Filter = () => {
 	const [currentFilterCategory, setcurrentFilterCategory] = useState("All");
 	const [currentFilterQuery, setCurrentFilterQuery] = useState("");
-	const [vehicleYears, setVehicleYears] = useState();
 
 	useEffect(() => {
 		if (currentFilterCategory === "Make") {
-			setFilterQuery(`where make = '${currentFilterQuery}'`);
+			table.updateFilter(`where make = '${currentFilterQuery}'`);
 		} else if (currentFilterCategory === "Year") {
-			setFilterQuery(`where year = ${currentFilterQuery}`);
+			table.updateFilter(`where year = ${currentFilterQuery}`);
 		} else if (currentFilterCategory === "Price") {
 			if (
 				parseInt(
 					currentFilterQuery.split("-")[0].replace(/[^0-9]/g, "")
 				) === 500000
 			) {
-				setFilterQuery(
+				table.updateFilter(
 					`where price > ${currentFilterQuery
 						.split("-")[0]
 						.replace(/[^0-9]/g, "")}`
 				);
 			} else {
-				setFilterQuery(
+				table.updateFilter(
 					`where price > ${currentFilterQuery
 						.split("-")[0]
 						.replace(/[^0-9]/g, "")} and price < ${currentFilterQuery
@@ -44,24 +44,12 @@ const Filter = ({ setFilterQuery }) => {
 
 	const filterQueryButtons = () => {
 		if (currentFilterCategory === "Make") {
-			return vehicleMake.collection;
+			return vehicle.manufacturers;
 		} else if (currentFilterCategory === "Year") {
-			return vehicleYears.sort();
+			return vehicle.years.sort((a, b) => a - b);
 		} else if (currentFilterCategory === "Price") {
 			return prices;
 		}
-	};
-
-	const settingVehicleYears = () => {
-		if (!vehicleModel.collection) return;
-
-		const years = [];
-		vehicleModel.collection.map((elem) =>
-			!years.includes(parseInt(elem.year))
-				? years.push(parseInt(elem.year))
-				: null
-		);
-		setVehicleYears(years);
 	};
 
 	return (
@@ -80,10 +68,9 @@ const Filter = ({ setFilterQuery }) => {
 						onClick={() => {
 							setcurrentFilterCategory(elem);
 							if (elem === "All") {
-								setFilterQuery();
+								table.updateFilter("");
 								setCurrentFilterQuery("");
 							}
-							if (elem === "Year") settingVehicleYears();
 						}}
 					>
 						{elem}
