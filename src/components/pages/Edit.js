@@ -168,11 +168,11 @@ const action = async ({ request, params }) => {
 							},
 						});
 						await vehicleMake.updateCollection();
-						return redirect("/");
 					} catch (error) {
 						return "An error occurred!";
 					}
 				}
+				return redirect("/");
 			} catch (error) {
 				return "An error occurred!";
 			}

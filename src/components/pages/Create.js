@@ -6,7 +6,7 @@ import {
 	useNavigation,
 } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import { vehicleMake } from "../../store";
+import { vehicleMake, vehicleModel } from "../../store";
 import useAuth from "../../useAuth";
 import Label from "../Label";
 import axios from "axios";
@@ -112,6 +112,8 @@ const action = async ({ request }) => {
 						price: parseInt(formData.get("price")),
 					},
 				});
+				await vehicleMake.updateCollection();
+				await vehicleModel.updateCollection();
 				return redirect(`/vehicle/${newModel.data.id}`);
 			} catch (err) {
 				return "An error occurred!";
@@ -140,6 +142,7 @@ const action = async ({ request }) => {
 					price: parseInt(formData.get("price")),
 				},
 			});
+			await vehicleModel.updateCollection();
 			return redirect(`/vehicle/${newModel.data.id}`);
 		} catch (err) {
 			console.error(err);
